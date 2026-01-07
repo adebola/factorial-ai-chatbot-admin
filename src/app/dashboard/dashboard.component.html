@@ -1,0 +1,90 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">ChatCraft Admin Dashboard</h1>
+      <div class="user-section">
+        <div class="user-info" *ngIf="currentUser">
+          <span class="user-name">{{ currentUser.full_name }}</span>
+          <span class="user-email">{{ currentUser.email }}</span>
+        </div>
+        <button class="btn btn-logout" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="welcome-section">
+      <h2>Welcome back, {{ currentUser?.full_name }}!</h2>
+      <p>Here's an overview of your ChatCraft platform</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🏢</div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ stats.totalTenants }}</h3>
+          <p class="stat-label">Total Tenants</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ stats.totalUsers }}</h3>
+          <p class="stat-label">Total Users</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">💬</div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ stats.totalMessages }}</h3>
+          <p class="stat-label">Total Messages</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ stats.activeSubscriptions }}</h3>
+          <p class="stat-label">Active Subscriptions</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-card">
+        <h3>Quick Actions</h3>
+        <ul class="action-list">
+          <li>View all tenants</li>
+          <li>Monitor system usage</li>
+          <li>Manage subscriptions</li>
+          <li>Review analytics</li>
+        </ul>
+        <p class="note">More features coming soon...</p>
+      </div>
+
+      <div class="info-card" *ngIf="currentUser">
+        <h3>Your Information</h3>
+        <div class="info-details">
+          <div class="info-row">
+            <span class="info-key">User ID:</span>
+            <span class="info-value">{{ currentUser.user_id }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Tenant:</span>
+            <span class="info-value">{{ currentUser.tenant_name }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Domain:</span>
+            <span class="info-value">{{ currentUser.tenant_domain }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Roles:</span>
+            <span class="info-value">{{ currentUser.roles.join(', ') }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

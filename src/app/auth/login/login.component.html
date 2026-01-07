@@ -1,0 +1,45 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-section">
+      <h1 class="logo">ChatCraft Admin</h1>
+    </div>
+
+    <div class="content-section">
+      <h2 class="welcome-heading">Welcome to Admin Portal</h2>
+      <p class="subtitle">Manage your ChatCraft platform</p>
+
+      <!-- OAuth Error State -->
+      <div *ngIf="oauthError" class="error-section">
+        <div class="error-icon">⚠️</div>
+        <h3 class="error-title">Authentication Failed</h3>
+        <p class="error-message">{{ errorMessage }}</p>
+        <button class="btn btn-primary" (click)="retryLogin()">
+          Try Again
+        </button>
+      </div>
+
+      <!-- Manual Login State (after logout) -->
+      <div *ngIf="!oauthError && isLogout && !loading" class="login-section">
+        <p class="info-message">You have been signed out successfully.</p>
+        <button class="btn btn-primary" (click)="initiateLogin()">
+          Sign In
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading && !oauthError" class="loading-section">
+        <div class="spinner"></div>
+        <p class="loading-text">Signing In...</p>
+      </div>
+
+      <!-- Auto-Redirecting State -->
+      <div *ngIf="!oauthError && !isLogout && !loading && autoRedirect" class="auto-redirect-section">
+        <div class="spinner"></div>
+        <p class="loading-text">Redirecting to sign in...</p>
+        <button class="btn btn-secondary" (click)="initiateLogin()">
+          Click here if not redirected automatically
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
