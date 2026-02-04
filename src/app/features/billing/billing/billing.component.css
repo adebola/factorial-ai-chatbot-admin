@@ -1,0 +1,14 @@
+.billing-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.billing-container h1 {
+  margin: 0 0 24px 0;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+mat-tab-group {
+  margin-top: 24px;
+}

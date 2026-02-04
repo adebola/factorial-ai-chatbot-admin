@@ -1,0 +1,89 @@
+<div class="subscription-list">
+  <div class="filters-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [(value)]="statusFilter" (selectionChange)="onFilterChange()">
+        <mat-option value="">All</mat-option>
+        <mat-option value="active">Active</mat-option>
+        <mat-option value="expired">Expired</mat-option>
+        <mat-option value="cancelled">Cancelled</mat-option>
+        <mat-option value="trial">Trial</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="loading" class="loading">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+
+      <table mat-table [dataSource]="dataSource" *ngIf="!loading">
+        <ng-container matColumnDef="user_full_name">
+          <th mat-header-cell *matHeaderCellDef>User</th>
+          <td mat-cell *matCellDef="let sub">{{ sub.user_full_name || sub.user_email || 'N/A' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let sub">{{ formatAmount(sub) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cycle">
+          <th mat-header-cell *matHeaderCellDef>Billing Cycle</th>
+          <td mat-cell *matCellDef="let sub">{{ formatCycle(sub.billing_cycle) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let sub">
+            <mat-chip [ngClass]="getStatusColor(sub.status)">{{ sub.status }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="period">
+          <th mat-header-cell *matHeaderCellDef>Current Period</th>
+          <td mat-cell *matCellDef="let sub">
+            {{ sub.current_period_start | date:'shortDate' }} - {{ sub.current_period_end | date:'shortDate' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="auto_renew">
+          <th mat-header-cell *matHeaderCellDef>Auto Renew</th>
+          <td mat-cell *matCellDef="let sub">{{ sub.auto_renew ? 'Yes' : 'No' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let sub">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openCustomLimitsDialog(sub)">
+                <mat-icon>tune</mat-icon>
+                <span>Custom Limits</span>
+              </button>
+              <button mat-menu-item (click)="cancelSubscription(sub, $event)" *ngIf="sub.status === 'active'">
+                <mat-icon>cancel</mat-icon>
+                <span>Cancel</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator
+        *ngIf="!loading"
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[10, 20, 50]"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

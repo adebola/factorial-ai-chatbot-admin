@@ -1,0 +1,40 @@
+.payment-list {
+  padding: 20px 0;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+table {
+  width: 100%;
+}
+
+mat-chip.completed-chip {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+mat-chip.pending-chip {
+  background-color: #fff9c4;
+  color: #f57f17;
+}
+
+mat-chip.failed-chip {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+mat-chip.refunded-chip {
+  background-color: #e0e0e0;
+  color: #616161;
+}

@@ -1,0 +1,70 @@
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  justify-content: center;
+}
+
+.plan-info {
+  padding: 8px 0 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.tenant-info {
+  color: #999;
+  font-size: 12px;
+}
+
+.limits-table {
+  margin-bottom: 16px;
+}
+
+.limits-table table {
+  width: 100%;
+}
+
+.custom-value {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  color: #999;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.section-divider span {
+  padding: 0 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.spacer {
+  flex: 1;
+}
+
+mat-dialog-actions {
+  gap: 8px;
+}

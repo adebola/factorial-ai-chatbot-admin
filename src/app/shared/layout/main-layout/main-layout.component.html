@@ -1,0 +1,71 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Side Navigation -->
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    [opened]="sidenavOpened"
+    class="sidenav"
+  >
+    <div class="sidenav-header">
+      <mat-icon class="app-icon">admin_panel_settings</mat-icon>
+      <h2 class="app-title">Super Admin</h2>
+    </div>
+
+    <mat-nav-list class="nav-list">
+      <a
+        mat-list-item
+        *ngFor="let item of navigationItems"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="sidenav-content">
+    <!-- Top Toolbar -->
+    <mat-toolbar color="primary" class="toolbar">
+      <button
+        mat-icon-button
+        (click)="toggleSidenav()"
+        aria-label="Toggle sidenav"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="toolbar-title">ChatCraft Super Admin</span>
+
+      <span class="toolbar-spacer"></span>
+
+      <!-- User Menu -->
+      <div class="user-menu" *ngIf="currentUser$ | async as user">
+        <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+          <mat-icon>account_circle</mat-icon>
+          <span class="user-name">{{ user.full_name || user.email }}</span>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+
+        <mat-menu #userMenu="matMenu">
+          <div class="user-info" mat-menu-item disabled>
+            <div class="user-email">{{ user.email }}</div>
+            <mat-chip class="role-chip">System Admin</mat-chip>
+          </div>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

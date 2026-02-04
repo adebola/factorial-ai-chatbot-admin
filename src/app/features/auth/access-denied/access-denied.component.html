@@ -1,0 +1,61 @@
+<div class="access-denied-container">
+  <mat-card class="access-denied-card">
+    <mat-card-header>
+      <div mat-card-avatar class="header-icon">
+        <mat-icon color="warn">block</mat-icon>
+      </div>
+      <mat-card-title>Access Denied</mat-card-title>
+      <mat-card-subtitle>You don't have permission to access this application</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="content-section">
+        <mat-icon class="large-icon" color="warn">lock</mat-icon>
+
+        <h2>System Administrator Access Required</h2>
+
+        <p class="message">
+          This application is restricted to ChatCraft System Administrators only.
+          Your account does not have the required <strong>ROLE_SYSTEM_ADMIN</strong> authority.
+        </p>
+
+        <div class="user-info" *ngIf="userEmail">
+          <div class="info-row">
+            <mat-icon>person</mat-icon>
+            <span><strong>Email:</strong> {{ userEmail }}</span>
+          </div>
+
+          <div class="info-row" *ngIf="userAuthorities.length > 0">
+            <mat-icon>verified_user</mat-icon>
+            <div class="authorities">
+              <strong>Your Authorities:</strong>
+              <div class="authority-chips">
+                <mat-chip *ngFor="let authority of userAuthorities">
+                  {{ authority }}
+                </mat-chip>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="help-section">
+          <p>
+            <mat-icon>help_outline</mat-icon>
+            If you believe you should have access to this application, please contact your system administrator.
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Go Back
+      </button>
+      <button mat-raised-button color="warn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

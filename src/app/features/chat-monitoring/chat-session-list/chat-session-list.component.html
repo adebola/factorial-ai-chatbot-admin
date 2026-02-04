@@ -1,0 +1,120 @@
+<div class="chat-monitoring-container">
+  <div class="page-header">
+    <h1>Chat Monitoring</h1>
+  </div>
+
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-row">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search</mat-label>
+          <input matInput [formControl]="searchControl" placeholder="Search by tenant or user">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="status-filter">
+          <mat-label>Status</mat-label>
+          <mat-select [(value)]="statusFilter" (selectionChange)="onFilterChange()">
+            <mat-option value="">All</mat-option>
+            <mat-option value="active">Active</mat-option>
+            <mat-option value="completed">Completed</mat-option>
+            <mat-option value="abandoned">Abandoned</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="loadSessions()" matTooltip="Refresh">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Loading chat sessions...</p>
+      </div>
+
+      <div *ngIf="!loading">
+        <table mat-table [dataSource]="dataSource" class="sessions-table">
+          <ng-container matColumnDef="tenant_name">
+            <th mat-header-cell *matHeaderCellDef>Tenant</th>
+            <td mat-cell *matCellDef="let session">{{ session.tenant_name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="user_email">
+            <th mat-header-cell *matHeaderCellDef>User</th>
+            <td mat-cell *matCellDef="let session">{{ session.user_email }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="message_count">
+            <th mat-header-cell *matHeaderCellDef>Messages</th>
+            <td mat-cell *matCellDef="let session">
+              <span class="message-count">{{ session.message_count }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="quality_score">
+            <th mat-header-cell *matHeaderCellDef>Quality</th>
+            <td mat-cell *matCellDef="let session">
+              <mat-chip class="quality-chip">{{ formatQualityScore(session.quality_score) }}</mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let session">
+              <mat-chip [ngClass]="getStatusColor(session.status)">{{ session.status }}</mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="started_at">
+            <th mat-header-cell *matHeaderCellDef>Started</th>
+            <td mat-cell *matCellDef="let session">{{ session.started_at | date:'short' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let session" class="actions-cell">
+              <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="viewChatDetail(session)">
+                  <mat-icon>visibility</mat-icon>
+                  <span>View Messages</span>
+                </button>
+                <button mat-menu-item (click)="exportChat(session, $event)">
+                  <mat-icon>download</mat-icon>
+                  <span>Export</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+              class="session-row" 
+              (click)="viewChatDetail(row)">
+          </tr>
+        </table>
+
+        <div *ngIf="dataSource.length === 0" class="empty-state">
+          <mat-icon>chat</mat-icon>
+          <h3>No chat sessions found</h3>
+          <p>Try adjusting your filters</p>
+        </div>
+      </div>
+
+      <mat-paginator
+        *ngIf="!loading && dataSource.length > 0"
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

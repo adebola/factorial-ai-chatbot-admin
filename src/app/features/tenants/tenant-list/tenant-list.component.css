@@ -1,0 +1,161 @@
+.tenant-list-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: #333;
+}
+
+.filters-card {
+  margin-bottom: 24px;
+}
+
+.filters-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 300px;
+}
+
+.status-filter {
+  width: 200px;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  color: #856404;
+}
+
+.table-card mat-card-content {
+  padding: 0 !important;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  gap: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.tenants-table {
+  width: 100%;
+}
+
+.tenants-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.tenants-table td,
+.tenants-table th {
+  padding: 16px;
+}
+
+.tenant-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tenant-row:hover {
+  background-color: #f5f5f5;
+}
+
+.tenant-name strong {
+  color: #333;
+  font-size: 14px;
+}
+
+.domain-text {
+  color: #666;
+  font-size: 13px;
+}
+
+.plan-chip {
+  font-size: 11px;
+  height: 24px;
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.user-count {
+  font-weight: 500;
+  color: #333;
+}
+
+mat-chip.active-chip {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+mat-chip.suspended-chip {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+.actions-cell {
+  width: 60px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.empty-state mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .filters-row {
+    flex-direction: column;
+  }
+
+  .search-field,
+  .status-filter {
+    width: 100%;
+  }
+}

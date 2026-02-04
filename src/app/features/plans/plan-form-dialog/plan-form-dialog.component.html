@@ -1,0 +1,86 @@
+<h2 mat-dialog-title>{{ mode === 'create' ? 'Create' : 'Edit' }} Plan</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="planForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Plan Name</mat-label>
+      <input matInput formControlName="name" placeholder="e.g., Professional">
+      <mat-error *ngIf="planForm.get('name')?.hasError('required')">
+        Plan name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="2"></textarea>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Monthly Cost (NGN)</mat-label>
+        <input matInput type="text" formControlName="monthly_plan_cost" placeholder="50000.00">
+        <mat-hint>Use 0.00 for custom/contact sales</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Yearly Cost (NGN)</mat-label>
+        <input matInput type="text" formControlName="yearly_plan_cost" placeholder="500000.00">
+        <mat-hint>Use 0.00 for custom/contact sales</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Document Limit</mat-label>
+        <input matInput type="number" formControlName="document_limit">
+        <mat-hint>Use -1 for unlimited</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Website Limit</mat-label>
+        <input matInput type="number" formControlName="website_limit">
+        <mat-hint>Use -1 for unlimited</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Daily Chat Limit</mat-label>
+        <input matInput type="number" formControlName="daily_chat_limit">
+        <mat-hint>Use -1 for unlimited</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Monthly Chat Limit</mat-label>
+        <input matInput type="number" formControlName="monthly_chat_limit">
+        <mat-hint>Use -1 for unlimited</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="features-section">
+      <label>Features</label>
+      <div formArrayName="features">
+        <div *ngFor="let feature of features.controls; let i = index" class="feature-row">
+          <mat-form-field appearance="outline" class="feature-field">
+            <input matInput [formControlName]="i" placeholder="Feature description">
+          </mat-form-field>
+          <button mat-icon-button color="warn" (click)="removeFeature(i)" type="button">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button mat-button color="primary" (click)="addFeature()" type="button">
+        <mat-icon>add</mat-icon>
+        Add Feature
+      </button>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="submitting || planForm.invalid">
+    <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+    <span *ngIf="!submitting">{{ mode === 'create' ? 'Create' : 'Update' }}</span>
+  </button>
+</mat-dialog-actions>

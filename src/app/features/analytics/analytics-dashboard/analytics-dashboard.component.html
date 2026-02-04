@@ -1,0 +1,168 @@
+<div class="analytics-container">
+  <h1>System Analytics</h1>
+
+  <div *ngIf="loading" class="loading"><mat-spinner></mat-spinner></div>
+
+  <div *ngIf="!loading">
+    <!-- Revenue Metrics -->
+    <mat-card class="section-card">
+      <mat-card-header><mat-card-title>Revenue Metrics</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <div class="metrics-grid" *ngIf="systemMetrics">
+          <div class="metric-item">
+            <div class="metric-label">Total Revenue</div>
+            <div class="metric-value">₦{{ systemMetrics.total_revenue | number }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">MRR</div>
+            <div class="metric-value">₦{{ systemMetrics.mrr | number }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">ARR</div>
+            <div class="metric-value">₦{{ systemMetrics.arr | number }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Active Subscriptions</div>
+            <div class="metric-value">{{ systemMetrics.active_subscriptions }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Churn Rate</div>
+            <div class="metric-value">{{ systemMetrics.churn_rate }}%</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Avg Revenue/Tenant</div>
+            <div class="metric-value">₦{{ systemMetrics.average_revenue_per_tenant | number }}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Revenue Trend Chart -->
+    <mat-card class="chart-card">
+      <mat-card-content>
+        <div class="chart-container" *ngIf="revenueChartData">
+          <canvas baseChart [data]="revenueChartData" [options]="revenueChartOptions" type="line"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Engagement Metrics -->
+    <mat-card class="section-card">
+      <mat-card-header><mat-card-title>User Engagement</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <div class="metrics-grid" *ngIf="engagementMetrics">
+          <div class="metric-item">
+            <div class="metric-label">Daily Active Users</div>
+            <div class="metric-value">{{ engagementMetrics.daily_active_users | number }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Weekly Active Users</div>
+            <div class="metric-value">{{ engagementMetrics.weekly_active_users | number }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Monthly Active Users</div>
+            <div class="metric-value">{{ engagementMetrics.monthly_active_users | number }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Avg Session (min)</div>
+            <div class="metric-value">{{ engagementMetrics.average_session_duration | number:'1.1-1' }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Messages/User</div>
+            <div class="metric-value">{{ engagementMetrics.messages_per_user | number:'1.1-1' }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Active Conversations</div>
+            <div class="metric-value">{{ engagementMetrics.active_conversations | number }}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- User Growth Chart -->
+    <mat-card class="chart-card">
+      <mat-card-content>
+        <div class="chart-container" *ngIf="userGrowthChartData">
+          <canvas baseChart [data]="userGrowthChartData" [options]="userGrowthChartOptions" type="line"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Growth Metrics -->
+    <mat-card class="section-card">
+      <mat-card-header><mat-card-title>Growth Metrics</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <div class="metrics-grid" *ngIf="growthMetrics">
+          <div class="metric-item">
+            <div class="metric-label">New Tenants (This Month)</div>
+            <div class="metric-value">{{ growthMetrics.new_tenants_this_month }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">New Users (This Month)</div>
+            <div class="metric-value">{{ growthMetrics.new_users_this_month }}</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Growth Rate</div>
+            <div class="metric-value">{{ growthMetrics.growth_rate }}%</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Conversion Rate</div>
+            <div class="metric-value">{{ growthMetrics.conversion_rate }}%</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Retention Rate</div>
+            <div class="metric-value">{{ growthMetrics.retention_rate }}%</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- System Health -->
+    <mat-card class="section-card">
+      <mat-card-header><mat-card-title>System Health</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <div class="health-grid" *ngIf="systemHealth">
+          <div class="health-item">
+            <mat-icon [color]="systemHealth.api_uptime > 99 ? 'primary' : 'warn'">cloud_done</mat-icon>
+            <div class="health-label">API Uptime</div>
+            <div class="health-value">{{ systemHealth.api_uptime }}%</div>
+          </div>
+          <div class="health-item">
+            <mat-icon [color]="systemHealth.average_response_time < 200 ? 'primary' : 'warn'">speed</mat-icon>
+            <div class="health-label">Avg Response Time</div>
+            <div class="health-value">{{ systemHealth.average_response_time }}ms</div>
+          </div>
+          <div class="health-item">
+            <mat-icon [color]="systemHealth.error_rate < 1 ? 'primary' : 'warn'">error_outline</mat-icon>
+            <div class="health-label">Error Rate</div>
+            <div class="health-value">{{ systemHealth.error_rate }}%</div>
+          </div>
+          <div class="health-item">
+            <mat-icon [color]="getHealthColor(systemHealth.database_health)">storage</mat-icon>
+            <div class="health-label">Database</div>
+            <div class="health-value">{{ systemHealth.database_health }}</div>
+          </div>
+          <div class="health-item">
+            <mat-icon [color]="systemHealth.cache_hit_rate > 90 ? 'primary' : 'warn'">memory</mat-icon>
+            <div class="health-label">Cache Hit Rate</div>
+            <div class="health-value">{{ systemHealth.cache_hit_rate }}%</div>
+          </div>
+          <div class="health-item">
+            <mat-icon [color]="getQueueColor(systemHealth.queue_status)">queue</mat-icon>
+            <div class="health-label">Queue Status</div>
+            <div class="health-value">{{ systemHealth.queue_status }}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Performance Chart -->
+    <mat-card class="chart-card">
+      <mat-card-content>
+        <div class="chart-container" *ngIf="performanceChartData">
+          <canvas baseChart [data]="performanceChartData" [options]="performanceChartOptions" type="line"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>
+  Chat Messages
+  <button mat-icon-button (click)="close()" class="close-button">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading messages...</p>
+  </div>
+
+  <div *ngIf="!loading" class="messages-container">
+    <div *ngFor="let message of messages" class="message" [ngClass]="getRoleClass(message.role)">
+      <div class="message-header">
+        <mat-chip class="role-chip">{{ message.role }}</mat-chip>
+        <span class="timestamp">{{ message.timestamp | date:'short' }}</span>
+      </div>
+      <div class="message-content">{{ message.content }}</div>
+    </div>
+
+    <div *ngIf="messages.length === 0" class="empty-messages">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <p>No messages in this session</p>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

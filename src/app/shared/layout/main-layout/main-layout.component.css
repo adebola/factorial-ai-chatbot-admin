@@ -1,0 +1,158 @@
+.sidenav-container {
+  height: 100vh;
+  display: flex;
+}
+
+/* Sidenav Styles */
+.sidenav {
+  width: 260px;
+  background-color: #2c3e50;
+  color: #ffffff;
+}
+
+.sidenav-header {
+  padding: 24px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #64b5f6;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.nav-list {
+  padding-top: 8px;
+}
+
+.nav-item {
+  color: #ecf0f1 !important;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.nav-item.active {
+  background-color: rgba(100, 181, 246, 0.2) !important;
+  color: #ffffff !important;
+  border-left-color: #64b5f6;
+}
+
+.nav-item mat-icon {
+  color: #ecf0f1 !important;
+}
+
+.nav-item:hover mat-icon,
+.nav-item.active mat-icon {
+  color: #ffffff !important;
+}
+
+.nav-item span {
+  color: inherit !important;
+}
+
+/* Main Content Styles */
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 16px;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+/* User Menu Styles */
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+}
+
+.user-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-info {
+  padding: 12px 16px;
+  pointer-events: none;
+}
+
+.user-email {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87);
+  margin-bottom: 8px;
+}
+
+.role-chip {
+  font-size: 11px;
+  height: 24px;
+  background-color: #7c4dff;
+  color: white;
+}
+
+/* Page Content Styles */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background-color: #f5f5f5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidenav {
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .toolbar-title {
+    font-size: 16px;
+  }
+
+  .page-content {
+    padding: 16px;
+  }
+}

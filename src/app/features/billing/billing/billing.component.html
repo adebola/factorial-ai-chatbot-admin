@@ -1,0 +1,12 @@
+<div class="billing-container">
+  <h1>Billing Management</h1>
+
+  <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="Subscriptions">
+      <app-subscription-list></app-subscription-list>
+    </mat-tab>
+    <mat-tab label="Payments">
+      <app-payment-list></app-payment-list>
+    </mat-tab>
+  </mat-tab-group>
+</div>

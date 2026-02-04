@@ -1,0 +1,37 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>ChatCraft Super Admin</mat-card-title>
+      <mat-card-subtitle>System Administrator Access</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="login-icon">
+        <mat-icon color="primary">admin_panel_settings</mat-icon>
+      </div>
+
+      <p class="login-description">
+        This application is for Factorial Systems staff only.
+        <br>
+        Requires <strong>ROLE_SYSTEM_ADMIN</strong> authority.
+      </p>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="login-button"
+        (click)="login()"
+        [disabled]="isLoading">
+        <mat-icon *ngIf="!isLoading">login</mat-icon>
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+        <span *ngIf="!isLoading">Login with OAuth2</span>
+        <span *ngIf="isLoading">Redirecting...</span>
+      </button>
+
+      <p class="login-info">
+        <mat-icon class="info-icon">info</mat-icon>
+        You will be redirected to the authorization server for authentication.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

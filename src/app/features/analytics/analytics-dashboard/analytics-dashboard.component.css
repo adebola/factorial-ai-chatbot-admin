@@ -1,0 +1,88 @@
+.analytics-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 24px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.section-card {
+  margin-bottom: 24px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.metric-item {
+  text-align: center;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+.health-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.health-item mat-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 12px;
+}
+
+.health-label {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.health-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.chart-card {
+  margin-bottom: 24px;
+}
+
+.chart-container {
+  height: 300px;
+}

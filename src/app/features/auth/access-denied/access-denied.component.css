@@ -1,0 +1,185 @@
+.access-denied-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.access-denied-card {
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.header-icon {
+  background-color: #f44336;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon mat-icon {
+  color: white;
+}
+
+mat-card-header {
+  margin-bottom: 24px;
+}
+
+mat-card-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+}
+
+mat-card-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}
+
+.content-section {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.large-icon {
+  font-size: 72px;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 24px;
+  opacity: 0.8;
+}
+
+.content-section h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.message {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  padding: 0 20px;
+}
+
+.user-info {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 24px 0;
+  text-align: left;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-row mat-icon {
+  color: #666;
+  margin-top: 2px;
+}
+
+.info-row span,
+.authorities {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.authority-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.authority-chips mat-chip {
+  font-size: 12px;
+  background-color: #e0e0e0;
+}
+
+.help-section {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+}
+
+.help-section p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 14px;
+  color: #856404;
+  text-align: left;
+}
+
+.help-section mat-icon {
+  color: #ffc107;
+  flex-shrink: 0;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 16px 16px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 24px;
+}
+
+mat-card-actions button {
+  min-width: 140px;
+}
+
+mat-card-actions button mat-icon {
+  margin-right: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .access-denied-container {
+    padding: 10px;
+  }
+
+  .access-denied-card {
+    max-width: 100%;
+  }
+
+  mat-card-title {
+    font-size: 22px;
+  }
+
+  .content-section h2 {
+    font-size: 20px;
+  }
+
+  .message {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  mat-card-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  mat-card-actions button {
+    width: 100%;
+  }
+}

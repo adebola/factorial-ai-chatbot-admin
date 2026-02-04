@@ -1,0 +1,226 @@
+<div class="tenant-detail-container" *ngIf="!loading && tenant">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="tenant-info">
+        <h1>{{ tenant.name }}</h1>
+        <mat-chip [class.active-chip]="tenant.isActive" [class.suspended-chip]="!tenant.isActive">
+          {{ tenant.isActive ? 'Active' : 'Suspended' }}
+        </mat-chip>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button *ngIf="tenant.isActive" (click)="suspendTenant()" color="warn">
+        <mat-icon>block</mat-icon>
+        Suspend
+      </button>
+      <button mat-raised-button *ngIf="!tenant.isActive" (click)="activateTenant()" color="primary">
+        <mat-icon>check_circle</mat-icon>
+        Activate
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <mat-tab-group>
+    <!-- Overview Tab -->
+    <mat-tab label="Overview">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Tenant Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="info-grid">
+              <div class="info-item">
+                <label>Tenant ID:</label>
+                <span>{{ tenant.id }}</span>
+              </div>
+              <div class="info-item">
+                <label>Domain:</label>
+                <span>{{ tenant.domain || 'Not set' }}</span>
+              </div>
+              <div class="info-item">
+                <label>Plan:</label>
+                <span>{{ tenant.planId }}</span>
+              </div>
+              <div class="info-item">
+                <label>API Key:</label>
+                <div class="api-key-container">
+                  <span class="api-key">{{ tenant.apiKey }}</span>
+                  <button mat-icon-button
+                          (click)="copyApiKey()"
+                          matTooltip="Copy API Key"
+                          class="copy-button">
+                    <mat-icon>content_copy</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="info-item">
+                <label>Created:</label>
+                <span>{{ tenant.createdAt | date:'medium' }}</span>
+              </div>
+              <div class="info-item">
+                <label>Last Updated:</label>
+                <span>{{ tenant.updatedAt | date:'medium' }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Users Tab -->
+    <mat-tab label="Users">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Tenant Users ({{ tenant.users.length || 0 }})</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p *ngIf="!tenant.users || tenant.users.length === 0">No users found</p>
+            <table mat-table [dataSource]="tenant.users || []" *ngIf="tenant.users && tenant.users.length > 0">
+              <ng-container matColumnDef="username">
+                <th mat-header-cell *matHeaderCellDef>Username</th>
+                <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+              </ng-container>
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let user">{{ user.firstName }} {{ user.lastName }}</td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let user">
+                  <mat-chip [class.active-chip]="user.isActive">
+                    {{ user.isActive ? 'Active' : 'Inactive' }}
+                  </mat-chip>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="['username', 'email', 'name', 'status']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['username', 'email', 'name', 'status'];"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Subscription Tab -->
+    <mat-tab label="Subscription">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Subscription Details</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngIf="subscription" class="info-grid">
+              <div class="info-item">
+                <label>Subscription ID:</label>
+                <span>{{ subscription.id || subscription.subscription_id || 'N/A' }}</span>
+              </div>
+              <div class="info-item">
+                <label>Plan Name:</label>
+                <span>{{ subscription.plan_name || subscription.planName || 'N/A' }}</span>
+              </div>
+              <div class="info-item">
+                <label>Status:</label>
+                <span class="subscription-status" [class.active]="subscription.status === 'active'">
+                  {{ subscription.status || 'N/A' }}
+                </span>
+              </div>
+              <div class="info-item" *ngIf="subscription.current_period_start || subscription.currentPeriodStart">
+                <label>Period Start:</label>
+                <span>{{ (subscription.current_period_start || subscription.currentPeriodStart) | date:'medium' }}</span>
+              </div>
+              <div class="info-item" *ngIf="subscription.current_period_end || subscription.currentPeriodEnd">
+                <label>Period End:</label>
+                <span>{{ (subscription.current_period_end || subscription.currentPeriodEnd) | date:'medium' }}</span>
+              </div>
+              <div class="info-item" *ngIf="subscription.auto_renew !== undefined || subscription.autoRenew !== undefined">
+                <label>Auto Renew:</label>
+                <span>{{ (subscription.auto_renew || subscription.autoRenew) ? 'Yes' : 'No' }}</span>
+              </div>
+              <div class="info-item" *ngIf="subscription.amount !== undefined">
+                <label>Amount:</label>
+                <span>{{ subscription.currency || '$' }}{{ subscription.amount | number:'1.2-2' }}</span>
+              </div>
+            </div>
+            <p *ngIf="!subscription">No subscription information available</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Statistics Tab -->
+    <mat-tab label="Statistics">
+      <div class="tab-content">
+        <mat-card *ngIf="statistics">
+          <mat-card-header>
+            <mat-card-title>Usage Statistics</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <mat-icon>people</mat-icon>
+                <div class="stat-value">{{ statistics.total_users }}</div>
+                <div class="stat-label">Total Users</div>
+              </div>
+              <div class="stat-card">
+                <mat-icon>person</mat-icon>
+                <div class="stat-value">{{ statistics.active_users }}</div>
+                <div class="stat-label">Active Users</div>
+              </div>
+              <div class="stat-card">
+                <mat-icon>chat</mat-icon>
+                <div class="stat-value">{{ statistics.total_chats }}</div>
+                <div class="stat-label">Total Chats</div>
+              </div>
+              <div class="stat-card">
+                <mat-icon>message</mat-icon>
+                <div class="stat-value">{{ statistics.total_messages }}</div>
+                <div class="stat-label">Messages</div>
+              </div>
+              <div class="stat-card">
+                <mat-icon>description</mat-icon>
+                <div class="stat-value">{{ statistics.num_documents || 0 }}</div>
+                <div class="stat-label">Documents</div>
+              </div>
+              <div class="stat-card">
+                <mat-icon>language</mat-icon>
+                <div class="stat-value">{{ statistics.num_websites || 0 }}</div>
+                <div class="stat-label">Websites</div>
+              </div>
+              <div class="stat-card">
+                <mat-icon>storage</mat-icon>
+                <div class="stat-value">{{ statistics.storage_used_mb || 0 }} MB</div>
+                <div class="stat-label">Storage Used</div>
+              </div>
+              <div class="stat-card" *ngIf="statistics.last_activity">
+                <mat-icon>schedule</mat-icon>
+                <div class="stat-value last-activity">{{ formatLastActivity(statistics.last_activity) }}</div>
+                <div class="stat-label">Last Activity</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner></mat-spinner>
+  <p>Loading tenant details...</p>
+</div>
+
+<div *ngIf="error" class="error-container">
+  <mat-icon>error</mat-icon>
+  <h3>{{ error }}</h3>
+  <button mat-raised-button color="primary" (click)="goBack()">Back to List</button>
+</div>

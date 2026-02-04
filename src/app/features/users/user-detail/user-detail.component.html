@@ -1,0 +1,82 @@
+<div class="user-detail-container" *ngIf="!loading && user">
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="user-info">
+        <h1>{{ getFullName() }}</h1>
+        <mat-chip [class.active-chip]="isUserActive()" [class.inactive-chip]="!isUserActive()">
+          {{ isUserActive() ? 'Active' : 'Inactive' }}
+        </mat-chip>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-button (click)="resetPassword()">
+        <mat-icon>lock_reset</mat-icon>
+        Reset Password
+      </button>
+      <button mat-raised-button *ngIf="isUserActive()" (click)="suspendUser()" color="warn">
+        <mat-icon>block</mat-icon>
+        Suspend
+      </button>
+      <button mat-raised-button *ngIf="!isUserActive()" (click)="activateUser()" color="primary">
+        <mat-icon>check_circle</mat-icon>
+        Activate
+      </button>
+    </div>
+  </div>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>User Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>User ID:</label>
+          <span>{{ user.id }}</span>
+        </div>
+        <div class="info-item">
+          <label>Username:</label>
+          <span>{{ user.username }}</span>
+        </div>
+        <div class="info-item">
+          <label>Email:</label>
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="info-item">
+          <label>Tenant:</label>
+          <span>{{ getTenantName() }}</span>
+        </div>
+        <div class="info-item">
+          <label>System Admin:</label>
+          <span>{{ isSystemAdmin() ? 'Yes' : 'No' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Tenant Admin:</label>
+          <span>{{ isTenantAdmin() ? 'Yes' : 'No' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Created:</label>
+          <span>{{ getCreatedAt() | date:'medium' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Last Login:</label>
+          <span>{{ getLastLogin() ? (getLastLogin() | date:'medium') : 'Never' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner></mat-spinner>
+  <p>Loading user details...</p>
+</div>
+
+<div *ngIf="error" class="error-container">
+  <mat-icon>error</mat-icon>
+  <h3>{{ error }}</h3>
+  <button mat-raised-button color="primary" (click)="goBack()">Back to List</button>
+</div>
