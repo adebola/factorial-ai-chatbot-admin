@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { BillingService, Subscription, SubscriptionListParams } from '../services/billing.service';
 import { CustomLimitsDialogComponent } from '../custom-limits-dialog/custom-limits-dialog.component';
+import { MigratePlanDialogComponent } from '../migrate-plan-dialog/migrate-plan-dialog.component';
 
 @Component({
   selector: 'app-subscription-list',
@@ -170,6 +171,19 @@ export class SubscriptionListComponent implements OnInit {
 
   openCustomLimitsDialog(subscription: Subscription): void {
     const dialogRef = this.dialog.open(CustomLimitsDialogComponent, {
+      width: '650px',
+      data: { subscription }
+    });
+
+    dialogRef.afterClosed().subscribe(changed => {
+      if (changed) {
+        this.loadSubscriptions();
+      }
+    });
+  }
+
+  openMigratePlanDialog(subscription: Subscription): void {
+    const dialogRef = this.dialog.open(MigratePlanDialogComponent, {
       width: '650px',
       data: { subscription }
     });

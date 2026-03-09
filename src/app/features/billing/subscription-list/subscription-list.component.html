@@ -60,6 +60,10 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openMigratePlanDialog(sub)" *ngIf="sub.status === 'active' || sub.status === 'trialing' || sub.status === 'trial'">
+                <mat-icon>swap_horiz</mat-icon>
+                <span>Migrate Plan</span>
+              </button>
               <button mat-menu-item (click)="openCustomLimitsDialog(sub)">
                 <mat-icon>tune</mat-icon>
                 <span>Custom Limits</span>

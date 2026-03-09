@@ -8,6 +8,7 @@ import { SubscriptionListComponent } from './subscription-list/subscription-list
 import { PaymentListComponent } from './payment-list/payment-list.component';
 import { CreatePaymentDialogComponent } from './create-payment-dialog/create-payment-dialog.component';
 import { CustomLimitsDialogComponent } from './custom-limits-dialog/custom-limits-dialog.component';
+import { MigratePlanDialogComponent } from './migrate-plan-dialog/migrate-plan-dialog.component';
 
 // Angular Material
 import { MatTableModule } from '@angular/material/table';
@@ -37,7 +38,8 @@ import { PaymentDetailComponent } from './payment-detail/payment-detail.componen
     PaymentListComponent,
     CreatePaymentDialogComponent,
     PaymentDetailComponent,
-    CustomLimitsDialogComponent
+    CustomLimitsDialogComponent,
+    MigratePlanDialogComponent
   ],
   imports: [
     CommonModule,

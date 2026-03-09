@@ -18,10 +18,10 @@ export const environment: Environment = {
   authServiceUrl: 'https://api.chatcraft.cc/auth',  // Authorization Server
 
   // Service-specific URLs (Production)
-  chatServiceUrl: 'https://chat.chatcraft.cc',
-  onboardingServiceUrl: 'https://onboarding.chatcraft.cc',
-  billingServiceUrl: 'https://billing.chatcraft.cc',
-  qualityServiceUrl: 'https://quality.chatcraft.cc',
+  chatServiceUrl: 'http://chat-service:8000',
+  onboardingServiceUrl: 'http://onboarding-service:8000',
+  billingServiceUrl: 'http://billing-service:8000',
+  qualityServiceUrl: 'http://answer-quality-service:8000',
 
   // OAuth2 Configuration for Super Admin
   oauth2: {

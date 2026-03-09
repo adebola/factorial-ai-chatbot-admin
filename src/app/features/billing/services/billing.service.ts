@@ -98,6 +98,36 @@ export interface CustomLimitsResponse {
   effective_limits: Record<string, number> | null;
 }
 
+export interface PlanMigrationPreviewRequest {
+  new_plan_id: string;
+  billing_cycle?: string;
+}
+
+export interface PlanMigrationPreviewResponse {
+  subscription_id: string;
+  tenant_id: string;
+  current_plan: { id: string; name: string; monthly_cost: number; yearly_cost: number };
+  target_plan: { id: string; name: string; monthly_cost: number; yearly_cost: number };
+  billing_cycle: string;
+  is_downgrade: boolean;
+  old_amount: number;
+  new_amount: number;
+  remaining_days: number;
+  prorated_amount: number;
+  recommended_payment: number;
+  current_period_end: string;
+}
+
+export interface PlanMigrationExecuteRequest {
+  new_plan_id: string;
+  payment_amount: number;
+  payment_method: string;
+  reference_number?: string;
+  reason: string;
+  billing_cycle?: string;
+  notes?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -246,6 +276,20 @@ export class BillingService {
   clearCustomLimits(subscriptionId: string): Observable<any> {
     return this.http.delete<any>(
       `${this.apiUrl}/admin/billing/subscriptions/${subscriptionId}/custom-limits`
+    );
+  }
+
+  previewPlanMigration(subscriptionId: string, data: PlanMigrationPreviewRequest): Observable<PlanMigrationPreviewResponse> {
+    return this.http.post<PlanMigrationPreviewResponse>(
+      `${this.apiUrl}/admin/billing/subscriptions/${subscriptionId}/migrate/preview`,
+      data
+    );
+  }
+
+  executePlanMigration(subscriptionId: string, data: PlanMigrationExecuteRequest): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/admin/billing/subscriptions/${subscriptionId}/migrate/execute`,
+      data
     );
   }
 }
