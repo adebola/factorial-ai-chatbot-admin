@@ -30,14 +30,14 @@ export const environment: Environment = {
     clientSecret: 'superadmin-secret',  // Should not be stored in frontend for production
 
     // Redirect URIs (Production)
-    redirectUri: 'https://admin.chatcraft.cc/callback',
-    postLogoutRedirectUri: 'https://admin.chatcraft.cc',
+    redirectUri: 'https://chatcraft-admin.web.app/callback',
+    postLogoutRedirectUri: 'https://chatcraft-admin.web.app',
 
     // OAuth2 Endpoints (Production)
-    authorizationUrl: 'https://auth.chatcraft.cc/auth/oauth2/authorize',
-    tokenUrl: 'https://auth.chatcraft.cc/auth/oauth2/token',
-    revocationUrl: 'https://auth.chatcraft.cc/auth/oauth2/revoke',
-    userInfoUrl: 'https://auth.chatcraft.cc/auth/userinfo',
+    authorizationUrl: 'https://api.chatcraft.cc/auth/oauth2/authorize',
+    tokenUrl: 'https://api.chatcraft.cc/auth/oauth2/token',
+    revocationUrl: 'https://api.chatcraft.cc/auth/oauth2/revoke',
+    userInfoUrl: 'https://api.chatcraft.cc/auth/userinfo',
 
     // Scopes
     scope: 'openid profile read write admin system-admin',

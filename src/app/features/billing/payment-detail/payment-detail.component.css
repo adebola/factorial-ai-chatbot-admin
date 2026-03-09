@@ -1,0 +1,106 @@
+.payment-detail-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.payment-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.payment-info h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 16px 0;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-item label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.info-item .amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.info-item .reference {
+  font-family: monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  text-align: center;
+}
+
+.error-container mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #d32f2f;
+  margin-bottom: 16px;
+}
+
+.completed-chip {
+  background-color: #c8e6c9 !important;
+  color: #2e7d32 !important;
+}
+
+.pending-chip {
+  background-color: #fff9c4 !important;
+  color: #f57f17 !important;
+}
+
+.failed-chip {
+  background-color: #ffcdd2 !important;
+  color: #c62828 !important;
+}
+
+.refunded-chip {
+  background-color: #e1bee7 !important;
+  color: #6a1b9a !important;
+}

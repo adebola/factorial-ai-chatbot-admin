@@ -1,0 +1,84 @@
+<div class="payment-detail-container" *ngIf="!loading && payment">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="payment-info">
+        <h1>Payment Details</h1>
+        <mat-chip [ngClass]="getStatusColor(payment.status)">
+          {{ payment.status }}
+        </mat-chip>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Information Card -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Payment Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Payment ID:</label>
+          <span>{{ payment.id }}</span>
+        </div>
+        <div class="info-item">
+          <label>Amount:</label>
+          <span class="amount">{{ formatAmount(payment.amount, payment.currency) }}</span>
+        </div>
+        <div class="info-item">
+          <label>Status:</label>
+          <span>
+            <mat-chip [ngClass]="getStatusColor(payment.status)">{{ payment.status }}</mat-chip>
+          </span>
+        </div>
+        <div class="info-item">
+          <label>Payment Method:</label>
+          <span>{{ payment.payment_method }}</span>
+        </div>
+        <div class="info-item">
+          <label>Transaction Type:</label>
+          <span>{{ payment.transaction_type }}</span>
+        </div>
+        <div class="info-item">
+          <label>Paystack Reference:</label>
+          <span class="reference">{{ payment.paystack_reference }}</span>
+        </div>
+        <div class="info-item">
+          <label>Description:</label>
+          <span>{{ payment.description || 'N/A' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Created At:</label>
+          <span>{{ payment.created_at | date:'medium' }}</span>
+        </div>
+        <div class="info-item" *ngIf="payment.processed_at">
+          <label>Processed At:</label>
+          <span>{{ payment.processed_at | date:'medium' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Subscription ID:</label>
+          <span>{{ payment.subscription_id }}</span>
+        </div>
+        <div class="info-item">
+          <label>Tenant ID:</label>
+          <span>{{ payment.tenant_id }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner></mat-spinner>
+  <p>Loading payment details...</p>
+</div>
+
+<div *ngIf="error" class="error-container">
+  <mat-icon>error</mat-icon>
+  <h3>{{ error }}</h3>
+  <button mat-raised-button color="primary" (click)="goBack()">Back to Billing</button>
+</div>
