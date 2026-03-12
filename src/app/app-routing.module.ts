@@ -68,6 +68,10 @@ const routes: Routes = [
       {
         path: 'analytics',
         loadChildren: () => import('./features/analytics/analytics.module').then(m => m.AnalyticsModule)
+      },
+      {
+        path: 'token-usage',
+        loadChildren: () => import('./features/token-usage/token-usage.module').then(m => m.TokenUsageModule)
       }
     ]
   },

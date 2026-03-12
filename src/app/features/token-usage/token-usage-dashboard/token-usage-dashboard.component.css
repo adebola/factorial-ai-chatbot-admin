@@ -1,0 +1,129 @@
+.token-usage-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 24px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.filter-card {
+  margin-bottom: 24px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.date-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  text-align: center;
+}
+
+.summary-icon {
+  margin-bottom: 8px;
+}
+
+.summary-icon mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #5D3EC1;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.summary-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+.section-card {
+  margin-bottom: 24px;
+}
+
+.chart-card {
+  margin-bottom: 24px;
+}
+
+.chart-container {
+  height: 300px;
+}
+
+.tenant-table {
+  width: 100%;
+}
+
+.no-data {
+  text-align: center;
+  padding: 24px;
+  color: #999;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.model-item {
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.model-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.model-type {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.model-tokens {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.model-cost {
+  font-size: 14px;
+  color: #ff9800;
+  margin-top: 4px;
+}
+
+.model-requests {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}

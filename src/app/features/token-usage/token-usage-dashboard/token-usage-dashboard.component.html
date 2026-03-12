@@ -1,0 +1,109 @@
+<div class="token-usage-container">
+  <h1>Token Usage</h1>
+
+  <!-- Date Range Selector -->
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <div class="filter-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Time Range</mat-label>
+          <mat-select [(ngModel)]="selectedRange" (selectionChange)="onRangeChange()">
+            <mat-option value="7">Last 7 Days</mat-option>
+            <mat-option value="30">Last 30 Days</mat-option>
+            <mat-option value="90">Last 90 Days</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="date-label">{{ startDate }} to {{ endDate }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="loading" class="loading"><mat-spinner></mat-spinner></div>
+
+  <div *ngIf="!loading">
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon"><mat-icon>toll</mat-icon></div>
+          <div class="summary-label">Total Tokens</div>
+          <div class="summary-value">{{ summary?.total_tokens | number }}</div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon"><mat-icon>attach_money</mat-icon></div>
+          <div class="summary-label">Total Cost (USD)</div>
+          <div class="summary-value">${{ summary?.total_cost_usd | number:'1.4-4' }}</div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon"><mat-icon>analytics</mat-icon></div>
+          <div class="summary-label">Total Requests</div>
+          <div class="summary-value">{{ summary?.request_count | number }}</div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon"><mat-icon>speed</mat-icon></div>
+          <div class="summary-label">Avg Cost/Request</div>
+          <div class="summary-value">${{ avgCostPerRequest | number:'1.6-6' }}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Daily Cost Chart -->
+    <mat-card class="chart-card">
+      <mat-card-content>
+        <div class="chart-container" *ngIf="dailyCostChartData">
+          <canvas baseChart [data]="dailyCostChartData" [options]="dailyCostChartOptions" type="line"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Per-Tenant Table -->
+    <mat-card class="section-card">
+      <mat-card-header><mat-card-title>Usage by Tenant</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="tenantData" class="tenant-table" *ngIf="tenantData.length > 0">
+          <ng-container matColumnDef="tenant_id">
+            <th mat-header-cell *matHeaderCellDef>Tenant ID</th>
+            <td mat-cell *matCellDef="let row">{{ row.tenant_id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total_tokens">
+            <th mat-header-cell *matHeaderCellDef>Total Tokens</th>
+            <td mat-cell *matCellDef="let row">{{ row.total_tokens | number }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total_cost_usd">
+            <th mat-header-cell *matHeaderCellDef>Cost (USD)</th>
+            <td mat-cell *matCellDef="let row">${{ row.total_cost_usd | number:'1.4-4' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="request_count">
+            <th mat-header-cell *matHeaderCellDef>Requests</th>
+            <td mat-cell *matCellDef="let row">{{ row.request_count | number }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div *ngIf="tenantData.length === 0" class="no-data">No tenant data available</div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Per-Model Breakdown -->
+    <mat-card class="section-card" *ngIf="modelData.length > 0">
+      <mat-card-header><mat-card-title>Usage by Model</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <div class="model-grid">
+          <div class="model-item" *ngFor="let m of modelData">
+            <div class="model-name">{{ m.model }}</div>
+            <div class="model-type">{{ m.usage_type }}</div>
+            <div class="model-tokens">{{ m.total_tokens | number }} tokens</div>
+            <div class="model-cost">${{ m.total_cost_usd | number:'1.4-4' }}</div>
+            <div class="model-requests">{{ m.request_count | number }} requests</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

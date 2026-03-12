@@ -29,7 +29,8 @@ export class MainLayoutComponent implements OnInit {
     { label: 'Plans', icon: 'subscriptions', route: '/plans' },
     { label: 'Chat Monitoring', icon: 'chat', route: '/chat-monitoring' },
     { label: 'Quality Analytics', icon: 'analytics', route: '/quality' },
-    { label: 'System Analytics', icon: 'insights', route: '/analytics' }
+    { label: 'System Analytics', icon: 'insights', route: '/analytics' },
+    { label: 'Token Usage', icon: 'toll', route: '/token-usage' }
   ];
 
   constructor(
