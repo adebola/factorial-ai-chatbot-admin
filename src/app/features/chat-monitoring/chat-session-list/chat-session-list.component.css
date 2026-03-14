@@ -59,13 +59,6 @@
   color: #333;
 }
 
-.quality-chip {
-  font-size: 11px;
-  height: 24px;
-  background-color: #e3f2fd;
-  color: #1976d2;
-}
-
 mat-chip.active-chip {
   background-color: #c8e6c9;
   color: #2e7d32;

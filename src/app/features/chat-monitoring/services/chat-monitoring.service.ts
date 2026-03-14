@@ -27,6 +27,12 @@ export interface ChatMessage {
   metadata?: any;
 }
 
+export interface ChatMessagesResponse {
+  tenant_id: string;
+  tenant_name: string;
+  messages: ChatMessage[];
+}
+
 export interface ChatSessionListParams {
   page?: number;
   size?: number;
@@ -70,8 +76,8 @@ export class ChatMonitoringService {
     );
   }
 
-  getChatMessages(sessionId: string): Observable<ChatMessage[]> {
-    return this.http.get<ChatMessage[]>(
+  getChatMessages(sessionId: string): Observable<ChatMessagesResponse> {
+    return this.http.get<ChatMessagesResponse>(
       `${this.apiUrl}/admin/chat-monitoring/sessions/${sessionId}/messages`
     );
   }

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ChatMonitoringService, ChatMessage } from '../services/chat-monitoring.service';
+import { ChatMonitoringService, ChatMessage, ChatMessagesResponse } from '../services/chat-monitoring.service';
 
 @Component({
   selector: 'app-chat-detail-dialog',
@@ -9,6 +9,7 @@ import { ChatMonitoringService, ChatMessage } from '../services/chat-monitoring.
 })
 export class ChatDetailDialogComponent implements OnInit {
   messages: ChatMessage[] = [];
+  tenantName: string = '';
   loading = true;
   sessionId: string;
 
@@ -27,8 +28,9 @@ export class ChatDetailDialogComponent implements OnInit {
   loadMessages(): void {
     this.loading = true;
     this.chatService.getChatMessages(this.sessionId).subscribe({
-      next: (messages) => {
-        this.messages = messages;
+      next: (response: ChatMessagesResponse) => {
+        this.tenantName = response.tenant_name || '';
+        this.messages = response.messages || [];
         this.loading = false;
       },
       error: () => {

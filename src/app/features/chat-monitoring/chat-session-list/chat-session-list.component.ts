@@ -12,7 +12,7 @@ import { ChatDetailDialogComponent } from '../chat-detail-dialog/chat-detail-dia
   styleUrls: ['./chat-session-list.component.css']
 })
 export class ChatSessionListComponent implements OnInit {
-  displayedColumns = ['tenant_name', 'user_email', 'message_count', 'quality_score', 'status', 'started_at', 'actions'];
+  displayedColumns = ['user_email', 'message_count', 'status', 'started_at', 'actions'];
   dataSource: ChatSession[] = [];
   loading = false;
   totalElements = 0;
@@ -155,7 +155,4 @@ export class ChatSessionListComponent implements OnInit {
     return colors[status] || '';
   }
 
-  formatQualityScore(score?: number): string {
-    return score ? score.toFixed(1) : 'N/A';
-  }
 }
