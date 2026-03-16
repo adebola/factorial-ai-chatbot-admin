@@ -69,7 +69,7 @@
 
           <div class="info-item" *ngIf="subscription.current_period_start && subscription.current_period_end">
             <label>Current Period</label>
-            <span>{{ subscription.current_period_start | date:'MMM d' }} - {{ subscription.current_period_end | date:'MMM d, y' }}</span>
+            <span>{{ subscription.current_period_start | date:'dd/MM/yy' }} - {{ subscription.current_period_end | date:'dd/MM/yy' }}</span>
           </div>
 
           <div class="info-item" *ngIf="subscription.auto_renew !== undefined">

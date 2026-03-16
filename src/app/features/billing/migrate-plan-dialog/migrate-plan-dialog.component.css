@@ -1,0 +1,31 @@
+.full-width{width:100%;margin-bottom:16px}
+mat-dialog-content{min-width:550px}
+.current-info-section,.payment-section{margin-bottom:16px;padding:16px;background:#f5f5f5;border-radius:4px}
+.section-divider{display:flex;align-items:center;margin-bottom:16px}
+.section-divider span{font-size:14px;font-weight:500;color:#666;text-transform:uppercase}
+.subscription-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.info-item{display:flex;flex-direction:column;gap:4px}
+.info-item label,.cost-item label{font-size:12px;font-weight:500;color:#666;text-transform:uppercase}
+.info-item .amount{font-weight:600;color:#2e7d32}
+.info-item .plan-name{font-weight:600;color:#1976d2}
+.active-chip{background:#c8e6c9!important;color:#2e7d32!important}
+.trial-chip{background:#fff9c4!important;color:#f57f17!important}
+.preview-loading{display:flex;align-items:center;gap:12px;padding:16px;color:#666}
+.preview-error{display:flex;align-items:center;gap:8px;padding:12px;background:#ffebee;border-radius:4px;color:#c62828;margin-bottom:16px}
+.preview-section{padding:16px;background:#e3f2fd;border-radius:4px;margin-bottom:16px}
+.direction-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:16px;font-weight:600;margin-bottom:16px}
+.direction-badge.upgrade{background:#c8e6c9;color:#2e7d32}
+.direction-badge.downgrade{background:#ffcdd2;color:#c62828}
+.direction-badge mat-icon,.downgrade-note mat-icon{font-size:18px;width:18px;height:18px}
+.cost-comparison{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px}
+.cost-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cost-item span{font-size:18px;font-weight:600}
+.cost-arrow{color:#999}
+.calculation-details{background:#fff;border-radius:4px;padding:12px;border:1px solid #bbdefb}
+.detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0}
+.detail-row:last-child{border-bottom:none}
+.detail-row.recommended{font-weight:600}
+.recommended-amount{color:#1976d2}
+.positive{color:#c62828}
+.negative{color:#2e7d32}
+.downgrade-note{display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:8px 12px;background:#fff3e0;border-radius:4px;font-size:13px;color:#e65100}

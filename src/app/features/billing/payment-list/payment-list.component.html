@@ -45,7 +45,7 @@
         <ng-container matColumnDef="payment_date">
           <th mat-header-cell *matHeaderCellDef>Date</th>
           <td mat-cell *matCellDef="let payment">
-            {{ getPaymentDate(payment) ? (getPaymentDate(payment) | date:'medium') : 'N/A' }}
+            {{ getPaymentDate(payment) ? (getPaymentDate(payment) | date:'dd/MM/yy') : 'N/A' }}
           </td>
         </ng-container>
 

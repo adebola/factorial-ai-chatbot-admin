@@ -15,7 +15,7 @@
     <div *ngFor="let message of messages" class="message" [ngClass]="getRoleClass(message.role)">
       <div class="message-header">
         <mat-chip class="role-chip">{{ message.role }}</mat-chip>
-        <span class="timestamp">{{ message.timestamp | date:'short' }}</span>
+        <span class="timestamp">{{ message.timestamp | date:'dd/MM/yy' }}</span>
       </div>
       <div class="message-content">{{ message.content }}</div>
     </div>

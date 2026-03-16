@@ -59,11 +59,11 @@
         </div>
         <div class="info-item">
           <label>Created:</label>
-          <span>{{ getCreatedAt() | date:'medium' }}</span>
+          <span>{{ getCreatedAt() | date:'dd/MM/yy' }}</span>
         </div>
         <div class="info-item">
           <label>Last Login:</label>
-          <span>{{ getLastLogin() ? (getLastLogin() | date:'medium') : 'Never' }}</span>
+          <span>{{ getLastLogin() ? (getLastLogin() | date:'dd/MM/yy') : 'Never' }}</span>
         </div>
       </div>
     </mat-card-content>

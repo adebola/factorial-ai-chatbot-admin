@@ -61,11 +61,11 @@
               </div>
               <div class="info-item">
                 <label>Created:</label>
-                <span>{{ tenant.createdAt | date:'medium' }}</span>
+                <span>{{ tenant.createdAt | date:'dd/MM/yy' }}</span>
               </div>
               <div class="info-item">
                 <label>Last Updated:</label>
-                <span>{{ tenant.updatedAt | date:'medium' }}</span>
+                <span>{{ tenant.updatedAt | date:'dd/MM/yy' }}</span>
               </div>
             </div>
           </mat-card-content>
@@ -136,11 +136,11 @@
               </div>
               <div class="info-item" *ngIf="subscription.current_period_start || subscription.currentPeriodStart">
                 <label>Period Start:</label>
-                <span>{{ (subscription.current_period_start || subscription.currentPeriodStart) | date:'medium' }}</span>
+                <span>{{ (subscription.current_period_start || subscription.currentPeriodStart) | date:'dd/MM/yy' }}</span>
               </div>
               <div class="info-item" *ngIf="subscription.current_period_end || subscription.currentPeriodEnd">
                 <label>Period End:</label>
-                <span>{{ (subscription.current_period_end || subscription.currentPeriodEnd) | date:'medium' }}</span>
+                <span>{{ (subscription.current_period_end || subscription.currentPeriodEnd) | date:'dd/MM/yy' }}</span>
               </div>
               <div class="info-item" *ngIf="subscription.auto_renew !== undefined || subscription.autoRenew !== undefined">
                 <label>Auto Renew:</label>

@@ -44,7 +44,7 @@
         <ng-container matColumnDef="period">
           <th mat-header-cell *matHeaderCellDef>Current Period</th>
           <td mat-cell *matCellDef="let sub">
-            {{ sub.current_period_start | date:'shortDate' }} - {{ sub.current_period_end | date:'shortDate' }}
+            {{ sub.current_period_start | date:'dd/MM/yy' }} - {{ sub.current_period_end | date:'dd/MM/yy' }}
           </td>
         </ng-container>
 
