@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>{{ mode === 'create' ? 'Add' : 'Edit' }} LLM Provider</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="providerForm">
+    <!-- Provider Type -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Provider</mat-label>
+      <mat-select formControlName="provider" placeholder="Select provider">
+        <mat-option *ngFor="let type of providerTypes" [value]="type.value">
+          {{ type.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="providerForm.get('provider')?.hasError('required')">
+        Provider is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Model ID -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Model ID</mat-label>
+      <input matInput formControlName="model_id" placeholder="e.g. gpt-4o, qwen3.5:9b, claude-sonnet-4-6">
+      <mat-error *ngIf="providerForm.get('model_id')?.hasError('required')">
+        Model ID is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Display Name -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Display Name</mat-label>
+      <input matInput formControlName="display_name" placeholder="e.g. Local Qwen 3.5 9B">
+      <mat-error *ngIf="providerForm.get('display_name')?.hasError('required')">
+        Display name is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Base URL -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Base URL</mat-label>
+      <input matInput formControlName="base_url" [placeholder]="getBaseUrlHint()">
+      <mat-hint>{{ getBaseUrlHint() }}</mat-hint>
+    </mat-form-field>
+
+    <!-- System API Key -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>System API Key</mat-label>
+      <input matInput formControlName="api_key" type="password"
+             placeholder="{{ mode === 'edit' ? 'Leave empty to keep existing key' : 'Optional system-level API key' }}">
+      <mat-hint>System-level key shared by all tenants. Tenants can override with their own.</mat-hint>
+    </mat-form-field>
+
+    <div class="form-row checkbox-row">
+      <mat-checkbox formControlName="requires_api_key">Requires API Key</mat-checkbox>
+      <mat-checkbox *ngIf="mode === 'edit'" formControlName="is_active">Active</mat-checkbox>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()"
+          [disabled]="submitting || providerForm.invalid">
+    <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+    <span *ngIf="!submitting">{{ mode === 'create' ? 'Add Provider' : 'Update' }}</span>
+  </button>
+</mat-dialog-actions>

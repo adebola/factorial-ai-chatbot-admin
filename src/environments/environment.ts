@@ -20,8 +20,8 @@ export const environment: Environment = {
   // Service-specific URLs (for direct calls if needed)
   chatServiceUrl: 'http://localhost:8000',
   onboardingServiceUrl: 'http://localhost:8001',
-  billingServiceUrl: 'http://localhost:8005',
-  qualityServiceUrl: 'http://localhost:8003',
+  billingServiceUrl: 'http://localhost:8004',
+  qualityServiceUrl: 'http://localhost:8005',
 
   // OAuth2 Configuration for Super Admin
   oauth2: {

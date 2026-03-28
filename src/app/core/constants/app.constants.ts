@@ -80,6 +80,29 @@ export const API_ENDPOINTS = {
     DELETE: (id: string) => `/plans/${id}`,
     DETAIL: (id: string) => `/plans/${id}`,
   },
+
+  // Observability
+  OBSERVABILITY: {
+    LIST: '/admin/observability',
+    CREATE: '/admin/observability',
+    UPDATE: (tenantId: string, backendType: string) => `/admin/observability/${tenantId}/${backendType}`,
+    DELETE: (tenantId: string, backendType: string) => `/admin/observability/${tenantId}/${backendType}`,
+    TEST: (tenantId: string, backendType: string) => `/admin/observability/${tenantId}/${backendType}/test`,
+  },
+
+  // Agentic Services
+  SERVICES: {
+    LIST: '/admin/services',
+    CREATE: '/admin/services',
+    DETAIL: (id: string) => `/admin/services/${id}`,
+    UPDATE: (id: string) => `/admin/services/${id}`,
+    DELETE: (id: string) => `/admin/services/${id}`,
+    HEALTH: (id: string) => `/admin/services/${id}/health`,
+    ASSIGN: (serviceId: string) => `/admin/services/${serviceId}/assign`,
+    REVOKE: (serviceId: string, tenantId: string) => `/admin/services/${serviceId}/assign/${tenantId}`,
+    TENANTS: (serviceId: string) => `/admin/services/${serviceId}/tenants`,
+    TENANT_SERVICES: (tenantId: string) => `/admin/tenants/${tenantId}/services`,
+  },
 };
 
 /**
@@ -105,6 +128,9 @@ export const APP_ROUTES = {
     TENANT: (id: string) => `/quality/tenant/${id}`,
   },
   ANALYTICS: '/analytics/platform',
+  SERVICES: '/services',
+  SERVICE_DETAIL: (id: string) => `/services/${id}`,
+  OBSERVABILITY: '/observability',
 };
 
 /**

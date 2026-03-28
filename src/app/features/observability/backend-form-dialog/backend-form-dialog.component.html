@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>{{ mode === 'create' ? 'Add' : 'Edit' }} Observability Backend</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="backendForm">
+    <!-- Tenant Selection (create only) -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tenant</mat-label>
+      <mat-select formControlName="tenant_id" placeholder="Select tenant">
+        <mat-option *ngFor="let tenant of tenants" [value]="tenant.id">
+          {{ tenant.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="backendForm.get('tenant_id')?.hasError('required')">
+        Tenant is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Backend Type (create only) -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Backend Type</mat-label>
+      <mat-select formControlName="backend_type" placeholder="Select type">
+        <mat-option *ngFor="let type of backendTypes" [value]="type.value">
+          {{ type.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="backendForm.get('backend_type')?.hasError('required')">
+        Backend type is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- URL -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>URL</mat-label>
+      <input matInput formControlName="url" placeholder="http://prometheus:9090">
+      <mat-error *ngIf="backendForm.get('url')?.hasError('required')">
+        URL is required
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-row">
+      <!-- Auth Type -->
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Authentication</mat-label>
+        <mat-select formControlName="auth_type">
+          <mat-option *ngFor="let auth of authTypes" [value]="auth.value">
+            {{ auth.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Timeout -->
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Timeout (seconds)</mat-label>
+        <input matInput formControlName="timeout_seconds" type="number" min="1" max="120">
+      </mat-form-field>
+    </div>
+
+    <!-- Credentials (shown when auth_type != none) -->
+    <mat-form-field *ngIf="showCredentials" appearance="outline" class="full-width">
+      <mat-label>Credentials (JSON)</mat-label>
+      <textarea matInput formControlName="credentials_json" rows="3"
+                [placeholder]="getCredentialsHint()"></textarea>
+      <mat-hint>{{ getCredentialsHint() }}</mat-hint>
+    </mat-form-field>
+
+    <div class="form-row checkbox-row">
+      <mat-checkbox formControlName="verify_ssl">Verify SSL</mat-checkbox>
+      <mat-checkbox *ngIf="mode === 'edit'" formControlName="is_active">Active</mat-checkbox>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()"
+          [disabled]="submitting || backendForm.invalid">
+    <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+    <span *ngIf="!submitting">{{ mode === 'create' ? 'Add Backend' : 'Update' }}</span>
+  </button>
+</mat-dialog-actions>

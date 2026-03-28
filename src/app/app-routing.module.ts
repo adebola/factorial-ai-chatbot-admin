@@ -72,6 +72,18 @@ const routes: Routes = [
       {
         path: 'token-usage',
         loadChildren: () => import('./features/token-usage/token-usage.module').then(m => m.TokenUsageModule)
+      },
+      {
+        path: 'services',
+        loadChildren: () => import('./features/agentic-services/agentic-services.module').then(m => m.AgenticServicesModule)
+      },
+      {
+        path: 'observability',
+        loadChildren: () => import('./features/observability/observability.module').then(m => m.ObservabilityModule)
+      },
+      {
+        path: 'llm-providers',
+        loadChildren: () => import('./features/llm-providers/llm-providers.module').then(m => m.LLMProvidersModule)
       }
     ]
   },

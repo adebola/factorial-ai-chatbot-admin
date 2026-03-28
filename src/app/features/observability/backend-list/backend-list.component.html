@@ -1,0 +1,136 @@
+<div class="backend-list-container">
+  <div class="page-header">
+    <h1>Observability Backends</h1>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      Add Backend
+    </button>
+  </div>
+
+  <!-- Tenant Filter -->
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <div class="filter-row">
+        <mat-form-field appearance="outline" class="tenant-filter">
+          <mat-label>Filter by Tenant</mat-label>
+          <mat-select [(value)]="selectedTenantId" (selectionChange)="onTenantFilterChange()">
+            <mat-option value="">All Tenants</mat-option>
+            <mat-option *ngFor="let tenant of tenants" [value]="tenant.id">
+              {{ tenant.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="loadBackends()" matTooltip="Refresh">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="error" class="error-banner">
+    <mat-icon>warning</mat-icon>
+    <span>{{ error }}</span>
+  </div>
+
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Loading backends...</p>
+      </div>
+
+      <div *ngIf="!loading">
+        <table mat-table [dataSource]="dataSource" class="backends-table">
+          <!-- Backend Type -->
+          <ng-container matColumnDef="backend_type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let b">
+              <div class="backend-type-cell">
+                <mat-icon>{{ getBackendTypeIcon(b.backend_type) }}</mat-icon>
+                <mat-chip [color]="getBackendTypeColor(b.backend_type)" selected>
+                  {{ b.backend_type }}
+                </mat-chip>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- URL -->
+          <ng-container matColumnDef="url">
+            <th mat-header-cell *matHeaderCellDef>URL</th>
+            <td mat-cell *matCellDef="let b">
+              <span class="url-text">{{ b.url || '—' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Auth Type -->
+          <ng-container matColumnDef="auth_type">
+            <th mat-header-cell *matHeaderCellDef>Auth</th>
+            <td mat-cell *matCellDef="let b">
+              <code>{{ b.auth_type }}</code>
+            </td>
+          </ng-container>
+
+          <!-- Tenant -->
+          <ng-container matColumnDef="tenant">
+            <th mat-header-cell *matHeaderCellDef>Tenant</th>
+            <td mat-cell *matCellDef="let b">
+              <strong>{{ getTenantName(b.tenant_id) }}</strong>
+            </td>
+          </ng-container>
+
+          <!-- Status -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let b">
+              <mat-chip [class.active-chip]="b.is_active" [class.inactive-chip]="!b.is_active">
+                {{ b.is_active ? 'Active' : 'Inactive' }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Created At -->
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef>Created</th>
+            <td mat-cell *matCellDef="let b">
+              <span class="date-text">{{ b.created_at | date:'mediumDate' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let b" class="actions-cell">
+              <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openEditDialog(b, $event)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)="testBackend(b, $event)">
+                  <mat-icon>speed</mat-icon>
+                  <span>Test Connectivity</span>
+                </button>
+                <button mat-menu-item (click)="deleteBackend(b, $event)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="dataSource.length === 0" class="empty-state">
+          <mat-icon>monitoring</mat-icon>
+          <h3>No backends configured</h3>
+          <p>Add observability backends (Prometheus, Elasticsearch, Jaeger, etc.) for tenants</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

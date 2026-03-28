@@ -30,7 +30,10 @@ export class MainLayoutComponent implements OnInit {
     { label: 'Chat Monitoring', icon: 'chat', route: '/chat-monitoring' },
     { label: 'Quality Analytics', icon: 'analytics', route: '/quality' },
     { label: 'System Analytics', icon: 'insights', route: '/analytics' },
-    { label: 'Token Usage', icon: 'toll', route: '/token-usage' }
+    { label: 'Token Usage', icon: 'toll', route: '/token-usage' },
+    { label: 'Services', icon: 'extension', route: '/services' },
+    { label: 'Observability', icon: 'monitoring', route: '/observability' },
+    { label: 'LLM Providers', icon: 'smart_toy', route: '/llm-providers' }
   ];
 
   constructor(

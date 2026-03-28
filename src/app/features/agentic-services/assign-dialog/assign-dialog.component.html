@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Assign {{ serviceName }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="assignForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tenant</mat-label>
+      <mat-select formControlName="tenant_id" placeholder="Select tenant">
+        <mat-option *ngIf="loadingTenants" disabled>
+          Loading tenants...
+        </mat-option>
+        <mat-option *ngFor="let tenant of tenants" [value]="tenant.id">
+          {{ tenant.name }}
+        </mat-option>
+        <mat-option *ngIf="!loadingTenants && tenants.length === 0" disabled>
+          No tenants available
+        </mat-option>
+      </mat-select>
+      <mat-hint *ngIf="loadingTenants">Loading tenant list...</mat-hint>
+      <mat-error *ngIf="assignForm.get('tenant_id')?.hasError('required')">
+        Tenant is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Config (JSON)</mat-label>
+      <textarea matInput formControlName="config" rows="4"
+                placeholder='{"max_queries_per_day": 100}'></textarea>
+      <mat-hint>Optional per-tenant configuration overrides</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes" rows="2"
+                placeholder="Admin notes about this assignment"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()"
+          [disabled]="submitting || assignForm.invalid">
+    <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+    <span *ngIf="!submitting">Assign</span>
+  </button>
+</mat-dialog-actions>

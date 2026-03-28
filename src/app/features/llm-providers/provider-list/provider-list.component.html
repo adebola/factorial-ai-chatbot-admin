@@ -1,0 +1,126 @@
+<div class="provider-list-container">
+  <div class="page-header">
+    <h1>LLM Providers (Observability)</h1>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      Add Provider
+    </button>
+  </div>
+
+  <div *ngIf="error" class="error-banner">
+    <mat-icon>warning</mat-icon>
+    <span>{{ error }}</span>
+  </div>
+
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div class="filter-row">
+        <span class="table-hint">LLM providers available for the observability agent. Tenants select from this catalog.</span>
+        <button mat-icon-button (click)="loadProviders()" matTooltip="Refresh">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Loading providers...</p>
+      </div>
+
+      <div *ngIf="!loading">
+        <table mat-table [dataSource]="dataSource" class="providers-table">
+          <!-- Provider -->
+          <ng-container matColumnDef="provider">
+            <th mat-header-cell *matHeaderCellDef>Provider</th>
+            <td mat-cell *matCellDef="let p">
+              <div class="provider-cell">
+                <mat-icon>{{ getProviderIcon(p.provider) }}</mat-icon>
+                <mat-chip selected>{{ p.provider }}</mat-chip>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Model ID -->
+          <ng-container matColumnDef="model_id">
+            <th mat-header-cell *matHeaderCellDef>Model</th>
+            <td mat-cell *matCellDef="let p">
+              <code>{{ p.model_id }}</code>
+            </td>
+          </ng-container>
+
+          <!-- Display Name -->
+          <ng-container matColumnDef="display_name">
+            <th mat-header-cell *matHeaderCellDef>Display Name</th>
+            <td mat-cell *matCellDef="let p">
+              <strong>{{ p.display_name }}</strong>
+            </td>
+          </ng-container>
+
+          <!-- Base URL -->
+          <ng-container matColumnDef="base_url">
+            <th mat-header-cell *matHeaderCellDef>Base URL</th>
+            <td mat-cell *matCellDef="let p">
+              <span class="url-text">{{ p.base_url || '— (default)' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- API Key Info -->
+          <ng-container matColumnDef="api_key_info">
+            <th mat-header-cell *matHeaderCellDef>API Key</th>
+            <td mat-cell *matCellDef="let p">
+              <mat-chip *ngIf="!p.requires_api_key" class="no-key-chip">Not Required</mat-chip>
+              <mat-chip *ngIf="p.requires_api_key && p.has_system_api_key" class="has-key-chip">System Key Set</mat-chip>
+              <mat-chip *ngIf="p.requires_api_key && !p.has_system_api_key" class="needs-key-chip">Tenant Must Provide</mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Status -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let p">
+              <mat-chip [class.active-chip]="p.is_active" [class.inactive-chip]="!p.is_active">
+                {{ p.is_active ? 'Active' : 'Inactive' }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Created At -->
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef>Created</th>
+            <td mat-cell *matCellDef="let p">
+              <span class="date-text">{{ p.created_at | date:'mediumDate' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let p" class="actions-cell">
+              <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openEditDialog(p, $event)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)="deleteProvider(p, $event)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="dataSource.length === 0" class="empty-state">
+          <mat-icon>smart_toy</mat-icon>
+          <h3>No LLM providers configured</h3>
+          <p>Add LLM providers (OpenAI, Anthropic, Ollama, Azure) for the observability agent</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

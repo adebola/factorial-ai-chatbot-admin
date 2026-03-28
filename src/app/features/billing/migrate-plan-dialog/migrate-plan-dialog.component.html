@@ -1,0 +1,160 @@
+<h2 mat-dialog-title>Migrate Plan</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="migrationForm">
+    <!-- Current Subscription Info -->
+    <div class="current-info-section">
+      <div class="section-divider">
+        <span>Current Subscription</span>
+      </div>
+      <div class="subscription-info-grid">
+        <div class="info-item">
+          <label>User</label>
+          <span>{{ data.subscription.user_full_name || data.subscription.user_email }}</span>
+        </div>
+        <div class="info-item">
+          <label>Current Plan</label>
+          <span class="plan-name">{{ data.subscription.plan_name || data.subscription.plan_id }}</span>
+        </div>
+        <div class="info-item">
+          <label>Status</label>
+          <mat-chip [ngClass]="data.subscription.status === 'active' ? 'active-chip' : 'trial-chip'">
+            {{ data.subscription.status }}
+          </mat-chip>
+        </div>
+        <div class="info-item">
+          <label>Current Amount</label>
+          <span class="amount">{{ data.subscription.currency }} {{ formatAmount(data.subscription.amount) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Target Plan Selection -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Target Plan</mat-label>
+      <mat-select formControlName="new_plan_id" placeholder="Select target plan">
+        <mat-option *ngIf="loadingPlans" disabled>Loading plans...</mat-option>
+        <mat-option *ngFor="let plan of plans" [value]="plan.id">
+          {{ plan.name }} ({{ plan.monthly_plan_cost }}/mo | {{ plan.yearly_plan_cost }}/yr)
+        </mat-option>
+        <mat-option *ngIf="!loadingPlans && plans.length === 0" disabled>
+          No other plans available
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Billing Cycle</mat-label>
+      <mat-select formControlName="billing_cycle">
+        <mat-option value="monthly">Monthly</mat-option>
+        <mat-option value="yearly">Yearly</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Preview Section -->
+    <div *ngIf="loadingPreview" class="preview-loading">
+      <mat-spinner diameter="24"></mat-spinner>
+      <span>Calculating migration cost...</span>
+    </div>
+
+    <div *ngIf="previewError && !loadingPreview" class="preview-error">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ previewError }}</span>
+    </div>
+
+    <div *ngIf="preview && !loadingPreview" class="preview-section">
+      <div class="section-divider">
+        <span>Cost Calculation</span>
+      </div>
+
+      <div class="direction-badge" [ngClass]="preview.is_downgrade ? 'downgrade' : 'upgrade'">
+        <mat-icon>{{ preview.is_downgrade ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+        <span>{{ preview.is_downgrade ? 'DOWNGRADE' : 'UPGRADE' }}</span>
+      </div>
+
+      <div class="cost-comparison">
+        <div class="cost-item">
+          <label>Current Plan Cost</label>
+          <span>{{ formatAmount(preview.old_amount) }}</span>
+        </div>
+        <div class="cost-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+        <div class="cost-item">
+          <label>New Plan Cost</label>
+          <span>{{ formatAmount(preview.new_amount) }}</span>
+        </div>
+      </div>
+
+      <div class="calculation-details">
+        <div class="detail-row">
+          <span>Remaining Days in Period</span>
+          <span>{{ preview.remaining_days }} days</span>
+        </div>
+        <div class="detail-row">
+          <span>Prorated Difference</span>
+          <span [ngClass]="preview.prorated_amount >= 0 ? 'positive' : 'negative'">
+            {{ preview.prorated_amount >= 0 ? '+' : '' }}{{ formatAmount(preview.prorated_amount) }}
+          </span>
+        </div>
+        <div class="detail-row recommended">
+          <span>Recommended Payment</span>
+          <span class="recommended-amount">{{ formatAmount(preview.recommended_payment) }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="preview.is_downgrade" class="downgrade-note">
+        <mat-icon>info</mat-icon>
+        <span>For downgrades, the recommended payment is 0. The cost difference is not refunded.</span>
+      </div>
+    </div>
+
+    <!-- Payment & Reason Fields (only show after preview) -->
+    <div *ngIf="preview && !loadingPreview" class="payment-section">
+      <div class="section-divider">
+        <span>Payment Details</span>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Payment Amount</mat-label>
+        <input matInput type="number" formControlName="payment_amount" placeholder="0.00">
+        <mat-hint>You can adjust this from the recommended amount</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Payment Method</mat-label>
+        <mat-select formControlName="payment_method">
+          <mat-option value="bank_transfer">Bank Transfer</mat-option>
+          <mat-option value="cash">Cash</mat-option>
+          <mat-option value="cheque">Cheque</mat-option>
+          <mat-option value="waived">Waived</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Reference Number (Optional)</mat-label>
+        <input matInput formControlName="reference_number" placeholder="Payment reference">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Reason</mat-label>
+        <textarea matInput formControlName="reason" rows="2" placeholder="Reason for plan migration"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notes (Optional)</mat-label>
+        <textarea matInput formControlName="notes" rows="2" placeholder="Additional notes"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+  <button mat-raised-button color="primary"
+          (click)="onSubmit()"
+          [disabled]="submitting || migrationForm.invalid || !preview">
+    <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+    <span *ngIf="!submitting">Execute Migration</span>
+  </button>
+</mat-dialog-actions>

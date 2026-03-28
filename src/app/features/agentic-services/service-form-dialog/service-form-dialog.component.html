@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>{{ mode === 'create' ? 'Register' : 'Edit' }} Service</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="serviceForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Service Name</mat-label>
+      <input matInput formControlName="name" placeholder="e.g., Observability Agent">
+      <mat-error *ngIf="serviceForm.get('name')?.hasError('required')">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Service Key</mat-label>
+      <input matInput formControlName="service_key" placeholder="e.g., observability">
+      <mat-hint>Lowercase alphanumeric, hyphens, underscores only</mat-hint>
+      <mat-error *ngIf="serviceForm.get('service_key')?.hasError('required')">
+        Service key is required
+      </mat-error>
+      <mat-error *ngIf="serviceForm.get('service_key')?.hasError('pattern')">
+        Only lowercase letters, numbers, hyphens, and underscores
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="2"
+                placeholder="Human-readable description of this service"></textarea>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Base URL</mat-label>
+        <input matInput formControlName="base_url" placeholder="http://service:8006">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Health Check URL</mat-label>
+        <input matInput formControlName="health_check_url" placeholder="http://service:8006/health">
+        <mat-hint>Leave empty to use base_url/health</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat">
+          {{ cat | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()"
+          [disabled]="submitting || serviceForm.invalid">
+    <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+    <span *ngIf="!submitting">{{ mode === 'create' ? 'Register' : 'Update' }}</span>
+  </button>
+</mat-dialog-actions>

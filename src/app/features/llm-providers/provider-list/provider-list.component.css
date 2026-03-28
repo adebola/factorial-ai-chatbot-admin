@@ -1,0 +1,143 @@
+.provider-list-container {
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.table-hint {
+  font-size: 13px;
+  color: #666;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #fff3e0;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  color: #e65100;
+}
+
+.table-card {
+  border-radius: 8px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0;
+  gap: 16px;
+  color: #666;
+}
+
+.providers-table {
+  width: 100%;
+}
+
+.provider-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.provider-cell mat-icon {
+  color: #666;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.url-text {
+  font-size: 12px;
+  color: #666;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.date-text {
+  font-size: 12px;
+  color: #999;
+}
+
+code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.active-chip {
+  background-color: #e8f5e9 !important;
+  color: #2e7d32 !important;
+}
+
+.inactive-chip {
+  background-color: #fbe9e7 !important;
+  color: #c62828 !important;
+}
+
+.no-key-chip {
+  background-color: #f3e5f5 !important;
+  color: #6a1b9a !important;
+}
+
+.has-key-chip {
+  background-color: #e8f5e9 !important;
+  color: #2e7d32 !important;
+}
+
+.needs-key-chip {
+  background-color: #fff3e0 !important;
+  color: #e65100 !important;
+}
+
+.actions-cell {
+  width: 60px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0;
+  color: #999;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+}
+
+.empty-state p {
+  margin: 0;
+}

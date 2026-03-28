@@ -1,0 +1,21 @@
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 48%;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.checkbox-row {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.checkbox-row mat-checkbox {
+  margin-right: 24px;
+}
