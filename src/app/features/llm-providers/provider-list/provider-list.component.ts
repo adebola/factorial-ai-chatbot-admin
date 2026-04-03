@@ -13,7 +13,7 @@ import { ProviderFormDialogComponent } from '../provider-form-dialog/provider-fo
   styleUrls: ['./provider-list.component.css']
 })
 export class ProviderListComponent implements OnInit {
-  displayedColumns = ['provider', 'model_id', 'display_name', 'base_url', 'api_key_info', 'status', 'created_at', 'actions'];
+  displayedColumns = ['provider', 'model_id', 'display_name', 'max_context_tokens', 'context_limit_tokens', 'max_response_tokens', 'status', 'actions'];
   dataSource: LLMProvider[] = [];
   loading = false;
   error: string | null = null;

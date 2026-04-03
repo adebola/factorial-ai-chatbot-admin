@@ -52,6 +52,44 @@
       <mat-checkbox formControlName="requires_api_key">Requires API Key</mat-checkbox>
       <mat-checkbox *ngIf="mode === 'edit'" formControlName="is_active">Active</mat-checkbox>
     </div>
+
+    <!-- Context Window Configuration -->
+    <h3 class="section-title">Context Window Configuration</h3>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Max Context Tokens (model limit)</mat-label>
+        <input matInput type="number" formControlName="max_context_tokens">
+        <mat-hint>Total context window size of the model</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Context Limit Tokens (usable limit)</mat-label>
+        <input matInput type="number" formControlName="context_limit_tokens">
+        <mat-hint>Configured limit for agent conversations</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Max Response Tokens</mat-label>
+      <input matInput type="number" formControlName="max_response_tokens">
+      <mat-hint>Maximum tokens reserved for the model's response</mat-hint>
+    </mat-form-field>
+
+    <!-- Cost Configuration -->
+    <h3 class="section-title">Cost Configuration</h3>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Cost per Input Token ($)</mat-label>
+        <input matInput type="number" step="0.0001" formControlName="cost_per_input_token">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cost per Output Token ($)</mat-label>
+        <input matInput type="number" step="0.0001" formControlName="cost_per_output_token">
+      </mat-form-field>
+    </div>
   </form>
 </mat-dialog-content>
 

@@ -14,6 +14,12 @@ export interface LLMProvider {
   is_active: boolean;
   created_at: string;
   updated_at: string | null;
+  // Context window fields (from model registry sync)
+  max_context_tokens?: number;
+  context_limit_tokens?: number;
+  max_response_tokens?: number;
+  cost_per_input_token?: number;
+  cost_per_output_token?: number;
 }
 
 export interface CreateLLMProviderRequest {

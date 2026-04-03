@@ -31,7 +31,12 @@ export class AssignDialogComponent implements OnInit {
 
     this.assignForm = this.fb.group({
       tenant_id: ['', [Validators.required]],
-      config: [''],
+      // Structured config fields
+      triggers: [''],
+      query_endpoint: ['/api/v1/query'],
+      timeout_seconds: [120],
+      model_name: [''],
+      context_carry_over_enabled: [false],
       notes: ['']
     });
   }
@@ -71,20 +76,22 @@ export class AssignDialogComponent implements OnInit {
     this.submitting = true;
     const formValue = this.assignForm.value;
 
-    let config = null;
-    if (formValue.config && formValue.config.trim()) {
-      try {
-        config = JSON.parse(formValue.config);
-      } catch (e) {
-        this.snackBar.open('Invalid JSON in config field', 'Close', { duration: 3000 });
-        this.submitting = false;
-        return;
-      }
+    // Assemble config from structured fields
+    const config: Record<string, any> = {
+      query_endpoint: formValue.query_endpoint || '/api/v1/query',
+      timeout_seconds: formValue.timeout_seconds || 120,
+      context_carry_over_enabled: formValue.context_carry_over_enabled || false,
+    };
+    if (formValue.triggers && formValue.triggers.trim()) {
+      config['triggers'] = formValue.triggers.split(',').map((t: string) => t.trim()).filter(Boolean);
+    }
+    if (formValue.model_name && formValue.model_name.trim()) {
+      config['model_name'] = formValue.model_name.trim();
     }
 
     this.agenticService.assignService(this.serviceId, {
       tenant_id: formValue.tenant_id,
-      config: config,
+      config,
       notes: formValue.notes || undefined
     }).subscribe({
       next: () => {

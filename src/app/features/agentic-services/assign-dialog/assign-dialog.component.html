@@ -21,12 +21,39 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- Assignment Configuration -->
+    <h3 class="section-title">Configuration</h3>
+
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Config (JSON)</mat-label>
-      <textarea matInput formControlName="config" rows="4"
-                placeholder='{"max_queries_per_day": 100}'></textarea>
-      <mat-hint>Optional per-tenant configuration overrides</mat-hint>
+      <mat-label>Keyword Triggers (comma-separated)</mat-label>
+      <input matInput formControlName="triggers" placeholder="observability, monitoring, traces, alerts">
+      <mat-hint>Keywords that route messages to this agent. Leave empty to route all messages.</mat-hint>
     </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Query Endpoint</mat-label>
+        <input matInput formControlName="query_endpoint">
+        <mat-hint>Path on the agent service</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Timeout (seconds)</mat-label>
+        <input matInput type="number" formControlName="timeout_seconds">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Model Override</mat-label>
+      <input matInput formControlName="model_name" placeholder="e.g. gpt-4o, claude-sonnet-4-20250514">
+      <mat-hint>Leave empty to use the agent's default model</mat-hint>
+    </mat-form-field>
+
+    <div class="checkbox-row">
+      <mat-checkbox formControlName="context_carry_over_enabled">
+        Enable context carry-over on session overflow
+      </mat-checkbox>
+    </div>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Notes</mat-label>

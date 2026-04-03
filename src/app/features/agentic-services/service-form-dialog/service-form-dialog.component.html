@@ -49,6 +49,29 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <!-- Agent Catalog Presentation -->
+    <h3 class="section-title">Agent Catalog Presentation</h3>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Icon URL</mat-label>
+      <input matInput formControlName="icon_url" placeholder="https://example.com/icon.png">
+      <mat-hint>Icon displayed on the agent card in tenant dashboard</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Capabilities (JSON)</mat-label>
+      <textarea matInput formControlName="capabilities" rows="3"
+                placeholder='{"tools": ["prometheus", "kubernetes"], "features": ["metric analysis"]}'></textarea>
+      <mat-hint>What this agent can do — displayed in tenant catalog</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>UI Hints (JSON)</mat-label>
+      <textarea matInput formControlName="ui_hints" rows="3"
+                placeholder='{"suggested_prompts": ["Check cluster health"], "placeholder_text": "Ask about your infrastructure..."}'></textarea>
+      <mat-hint>Suggested prompts, placeholder text, accent color</mat-hint>
+    </mat-form-field>
   </form>
 </mat-dialog-content>
 

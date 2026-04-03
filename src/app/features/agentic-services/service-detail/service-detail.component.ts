@@ -137,6 +137,42 @@ export class ServiceDetailComponent implements OnInit {
     });
   }
 
+  editConfig(assignment: TenantAssignment, event: Event): void {
+    event.stopPropagation();
+
+    const currentConfig = assignment.config ? JSON.stringify(assignment.config, null, 2) : '';
+    const newConfigStr = prompt(
+      'Edit config JSON for tenant ' + assignment.tenant_id + ':\n\n'
+      + 'Example: {"triggers": ["cpu","memory","pod"], "query_endpoint": "/api/v1/observe/query", "timeout_seconds": 120}',
+      currentConfig
+    );
+
+    if (newConfigStr === null) return; // cancelled
+
+    let config: Record<string, any> | undefined;
+    if (newConfigStr.trim()) {
+      try {
+        config = JSON.parse(newConfigStr);
+      } catch (e) {
+        this.snackBar.open('Invalid JSON', 'Close', { duration: 3000 });
+        return;
+      }
+    }
+
+    this.agenticService.updateAssignment(
+      this.serviceId, assignment.tenant_id, { config }
+    ).subscribe({
+      next: () => {
+        this.snackBar.open('Config updated', 'Close', { duration: 3000 });
+        this.loadAssignments();
+      },
+      error: (err) => {
+        const msg = err.error?.detail || 'Failed to update config';
+        this.snackBar.open(msg, 'Close', { duration: 5000 });
+      }
+    });
+  }
+
   formatConfig(config: Record<string, any> | null): string {
     if (!config) return '—';
     return JSON.stringify(config, null, 2);

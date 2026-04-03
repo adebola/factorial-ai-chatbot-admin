@@ -41,7 +41,10 @@ export class ServiceFormDialogComponent implements OnInit {
       description: [this.service?.description || ''],
       base_url: [this.service?.base_url || ''],
       health_check_url: [this.service?.health_check_url || ''],
-      category: [this.service?.category || 'agentic', Validators.required]
+      category: [this.service?.category || 'agentic', Validators.required],
+      icon_url: [this.service?.icon_url || ''],
+      capabilities: [this.service?.capabilities ? JSON.stringify(this.service.capabilities, null, 2) : ''],
+      ui_hints: [this.service?.ui_hints ? JSON.stringify(this.service.ui_hints, null, 2) : '']
     });
   }
 
@@ -54,6 +57,22 @@ export class ServiceFormDialogComponent implements OnInit {
 
     this.submitting = true;
     const formValue = this.serviceForm.getRawValue();
+
+    // Parse JSON string fields
+    if (formValue.capabilities && typeof formValue.capabilities === 'string') {
+      try {
+        formValue.capabilities = JSON.parse(formValue.capabilities);
+      } catch {
+        formValue.capabilities = undefined;
+      }
+    }
+    if (formValue.ui_hints && typeof formValue.ui_hints === 'string') {
+      try {
+        formValue.ui_hints = JSON.parse(formValue.ui_hints);
+      } catch {
+        formValue.ui_hints = undefined;
+      }
+    }
 
     const request = this.mode === 'create'
       ? this.agenticService.createService(formValue as CreateServiceRequest)

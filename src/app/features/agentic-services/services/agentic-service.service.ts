@@ -11,6 +11,9 @@ export interface AgenticService {
   base_url: string | null;
   health_check_url: string | null;
   category: string;
+  icon_url: string | null;
+  capabilities: Record<string, any> | null;
+  ui_hints: Record<string, any> | null;
   is_active: boolean;
   tenant_count: number;
   created_at: string;
@@ -24,6 +27,9 @@ export interface CreateServiceRequest {
   base_url?: string;
   health_check_url?: string;
   category: string;
+  icon_url?: string;
+  capabilities?: Record<string, any>;
+  ui_hints?: Record<string, any>;
 }
 
 export interface UpdateServiceRequest {
@@ -33,6 +39,9 @@ export interface UpdateServiceRequest {
   health_check_url?: string;
   category?: string;
   is_active?: boolean;
+  icon_url?: string;
+  capabilities?: Record<string, any>;
+  ui_hints?: Record<string, any>;
 }
 
 export interface TenantAssignment {

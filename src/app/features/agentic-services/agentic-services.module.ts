@@ -7,6 +7,8 @@ import { ServiceListComponent } from './service-list/service-list.component';
 import { ServiceDetailComponent } from './service-detail/service-detail.component';
 import { ServiceFormDialogComponent } from './service-form-dialog/service-form-dialog.component';
 import { AssignDialogComponent } from './assign-dialog/assign-dialog.component';
+import { AgentSessionsComponent } from './agent-sessions/agent-sessions.component';
+import { AgentSessionDetailComponent } from './agent-sessions/agent-session-detail.component';
 
 // Angular Material
 import { MatTableModule } from '@angular/material/table';
@@ -22,13 +24,18 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
     ServiceListComponent,
     ServiceDetailComponent,
     ServiceFormDialogComponent,
-    AssignDialogComponent
+    AssignDialogComponent,
+    AgentSessionsComponent,
+    AgentSessionDetailComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +55,10 @@ import { MatSelectModule } from '@angular/material/select';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatDividerModule
   ]
 })
 export class AgenticServicesModule {}

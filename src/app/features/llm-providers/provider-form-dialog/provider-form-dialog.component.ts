@@ -50,7 +50,13 @@ export class ProviderFormDialogComponent {
       base_url: [this.provider?.base_url || ''],
       api_key: [''],
       requires_api_key: [this.provider?.requires_api_key ?? true],
-      is_active: [this.provider?.is_active ?? true]
+      is_active: [this.provider?.is_active ?? true],
+      // Context window configuration
+      max_context_tokens: [this.provider?.max_context_tokens || 128000, [Validators.min(1)]],
+      context_limit_tokens: [this.provider?.context_limit_tokens || 80000, [Validators.min(1)]],
+      max_response_tokens: [this.provider?.max_response_tokens || 4096, [Validators.min(1)]],
+      cost_per_input_token: [this.provider?.cost_per_input_token || 0, [Validators.min(0)]],
+      cost_per_output_token: [this.provider?.cost_per_output_token || 0, [Validators.min(0)]]
     });
   }
 
