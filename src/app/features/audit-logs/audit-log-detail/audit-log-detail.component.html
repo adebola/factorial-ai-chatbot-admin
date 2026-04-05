@@ -1,0 +1,145 @@
+<h2 mat-dialog-title>
+  Audit Event Detail
+  <button mat-icon-button (click)="close()" class="close-button">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading event details...</p>
+  </div>
+
+  <div *ngIf="!loading && event" class="detail-container">
+    <!-- Summary Section -->
+    <div class="detail-section">
+      <h3>Summary</h3>
+      <mat-divider></mat-divider>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <span class="field-label">Event ID</span>
+          <span class="field-value mono">{{ event.event_id }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Action</span>
+          <span class="field-value">{{ event.action_type }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Tier</span>
+          <mat-chip [ngClass]="getTierClass(event.tier)">{{ event.tier }}</mat-chip>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Occurred At</span>
+          <span class="field-value">{{ event.occurred_at | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actor Section -->
+    <div class="detail-section">
+      <h3>Actor</h3>
+      <mat-divider></mat-divider>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <span class="field-label">Actor Type</span>
+          <span class="field-value">{{ event.actor_type }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Email</span>
+          <span class="field-value">{{ event.actor_email || 'N/A' }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">User ID</span>
+          <span class="field-value mono">{{ event.actor_user_id || 'N/A' }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">IP Address</span>
+          <span class="field-value mono">{{ event.ip_address || 'N/A' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resource Section -->
+    <div class="detail-section">
+      <h3>Resource</h3>
+      <mat-divider></mat-divider>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <span class="field-label">Tenant ID</span>
+          <span class="field-value mono">{{ event.tenant_id }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Resource Type</span>
+          <span class="field-value">{{ event.resource_type || 'N/A' }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Resource ID</span>
+          <span class="field-value mono">{{ event.resource_id || 'N/A' }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Source Service</span>
+          <span class="field-value">{{ event.source_service }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tracing Section -->
+    <div class="detail-section">
+      <h3>Tracing</h3>
+      <mat-divider></mat-divider>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <span class="field-label">Trace ID</span>
+          <span class="field-value mono trace-id" *ngIf="event.trace_id">
+            {{ event.trace_id }}
+            <button mat-icon-button matTooltip="Copy Trace ID" (click)="copyTraceId()" class="copy-button">
+              <mat-icon>content_copy</mat-icon>
+            </button>
+          </span>
+          <span class="field-value" *ngIf="!event.trace_id">N/A</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Span ID</span>
+          <span class="field-value mono">{{ event.span_id || 'N/A' }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">User Agent</span>
+          <span class="field-value small">{{ event.user_agent || 'N/A' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- State Changes Section -->
+    <div class="detail-section" *ngIf="event.before_state || event.after_state">
+      <h3>State Changes</h3>
+      <mat-divider></mat-divider>
+      <div class="state-grid">
+        <div class="state-panel" *ngIf="event.before_state">
+          <h4>Before</h4>
+          <pre class="json-block">{{ formatJson(event.before_state) }}</pre>
+        </div>
+        <div class="state-panel" *ngIf="event.after_state">
+          <h4>After</h4>
+          <pre class="json-block">{{ formatJson(event.after_state) }}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metadata Section -->
+    <div class="detail-section" *ngIf="event.event_metadata">
+      <h3>Metadata</h3>
+      <mat-divider></mat-divider>
+      <pre class="json-block">{{ formatJson(event.event_metadata) }}</pre>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !event" class="empty-state">
+    <mat-icon>error_outline</mat-icon>
+    <p>Failed to load event details</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

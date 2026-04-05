@@ -32,6 +32,7 @@ export class MainLayoutComponent implements OnInit {
     { label: 'System Analytics', icon: 'insights', route: '/analytics' },
     { label: 'Token Usage', icon: 'toll', route: '/token-usage' },
     { label: 'Services', icon: 'extension', route: '/services' },
+    { label: 'Audit Logs', icon: 'policy', route: '/audit-logs' },
     { label: 'Observability', icon: 'monitoring', route: '/observability' },
     { label: 'LLM Providers', icon: 'smart_toy', route: '/llm-providers' }
   ];

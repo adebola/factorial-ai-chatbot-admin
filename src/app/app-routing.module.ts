@@ -84,6 +84,10 @@ const routes: Routes = [
       {
         path: 'llm-providers',
         loadChildren: () => import('./features/llm-providers/llm-providers.module').then(m => m.LLMProvidersModule)
+      },
+      {
+        path: 'audit-logs',
+        loadChildren: () => import('./features/audit-logs/audit-logs.module').then(m => m.AuditLogsModule)
       }
     ]
   },
