@@ -28,6 +28,7 @@ export class BackendFormDialogComponent implements OnInit {
     { value: 'alertmanager', label: 'AlertManager' },
     { value: 'otel_collector', label: 'OTel Collector' },
     { value: 'k8s', label: 'Kubernetes' },
+    { value: 'kafka', label: 'Kafka' },
     { value: 'llm', label: 'LLM Provider' }
   ];
 
@@ -83,6 +84,33 @@ export class BackendFormDialogComponent implements OnInit {
       case 'bearer': return '{"token": "your-bearer-token"}';
       case 'service_account': return '{"token": "k8s-service-account-token"}';
       default: return '';
+    }
+  }
+
+  /**
+   * Per-backend placeholder for the URL field. Kafka needs comma-separated
+   * bootstrap servers (host:port[,host:port,...]) which is non-obvious from a
+   * field labelled "URL", so we surface the hint inline.
+   */
+  getUrlPlaceholder(): string {
+    const backendType = this.backendForm.get('backend_type')?.value;
+    switch (backendType) {
+      case 'kafka':
+        return 'kafka-0.kafka-headless.chatcraft.svc.cluster.local:9092 (comma-separated for multiple brokers)';
+      case 'prometheus':
+        return 'http://prometheus:9090';
+      case 'elasticsearch':
+        return 'http://elasticsearch:9200';
+      case 'jaeger':
+        return 'http://jaeger:16686';
+      case 'alertmanager':
+        return 'http://alertmanager:9093';
+      case 'otel_collector':
+        return 'http://otel-collector:8888';
+      case 'k8s':
+        return 'https://kubernetes.default.svc (leave empty for in-cluster)';
+      default:
+        return 'http://prometheus:9090';
     }
   }
 

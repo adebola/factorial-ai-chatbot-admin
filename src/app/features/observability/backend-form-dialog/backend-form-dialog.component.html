@@ -31,7 +31,10 @@
     <!-- URL -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>URL</mat-label>
-      <input matInput formControlName="url" placeholder="http://prometheus:9090">
+      <input matInput formControlName="url" [placeholder]="getUrlPlaceholder()">
+      <mat-hint *ngIf="backendForm.get('backend_type')?.value === 'kafka'">
+        Kafka bootstrap servers — host:port, comma-separated for multiple brokers
+      </mat-hint>
       <mat-error *ngIf="backendForm.get('url')?.hasError('required')">
         URL is required
       </mat-error>
