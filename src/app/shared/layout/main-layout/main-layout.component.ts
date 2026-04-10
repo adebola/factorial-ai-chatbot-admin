@@ -21,6 +21,16 @@ export class MainLayoutComponent implements OnInit {
   currentUser$: Observable<User | null>;
   sidenavOpened = true;
 
+  /**
+   * Top-level sidenav. Plugin/agentic-service admin pages are intentionally
+   * NOT promoted into this menu — they live as actions inside the "Services"
+   * page (per service row + service detail "Provided admin screens" section).
+   * Reasoning: a flat menu of every plugin extension scales badly (a deploy
+   * with 20 plugins would have 30+ top-level entries with no scoping context),
+   * and the Services page already provides a natural grouping by owning
+   * service. See PluginAvailabilityGuard + service-detail.component for the
+   * other half of this design.
+   */
   navigationItems: NavigationItem[] = [
     { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
     { label: 'Tenants', icon: 'business', route: '/tenants' },
@@ -33,8 +43,6 @@ export class MainLayoutComponent implements OnInit {
     { label: 'Token Usage', icon: 'toll', route: '/token-usage' },
     { label: 'Services', icon: 'extension', route: '/services' },
     { label: 'Audit Logs', icon: 'policy', route: '/audit-logs' },
-    { label: 'Observability', icon: 'monitoring', route: '/observability' },
-    { label: 'LLM Providers', icon: 'smart_toy', route: '/llm-providers' }
   ];
 
   constructor(

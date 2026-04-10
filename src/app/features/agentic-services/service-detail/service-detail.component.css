@@ -133,3 +133,64 @@ code {
 .empty-state p {
   margin: 0;
 }
+
+/* ── Provided admin screens (plugin UI extensions) ── */
+
+.extensions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.extension-card {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  padding: 0;
+}
+
+.extension-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.extension-card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+.extension-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #5D3EC1;
+  flex-shrink: 0;
+}
+
+.extension-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.extension-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin-bottom: 4px;
+}
+
+.extension-route code {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.54);
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.extension-chevron {
+  color: rgba(0, 0, 0, 0.38);
+  flex-shrink: 0;
+}

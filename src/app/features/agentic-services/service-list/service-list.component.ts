@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AgenticServiceService, AgenticService } from '../services/agentic-service.service';
+import { AgenticServiceService, AgenticService, ServiceUiExtension } from '../services/agentic-service.service';
 import { ServiceFormDialogComponent } from '../service-form-dialog/service-form-dialog.component';
 
 @Component({
@@ -75,6 +75,17 @@ export class ServiceListComponent implements OnInit {
 
   viewDetail(service: AgenticService): void {
     this.router.navigate(['/services', service.id]);
+  }
+
+  /**
+   * Navigate to a plugin's UI extension. Routes are top-level (e.g.
+   * /observability) — see PluginAvailabilityGuard. The matching catalog row
+   * already exists by definition (the user clicked an entry rendered from
+   * service.ui_extensions), so the guard will allow the navigation.
+   */
+  openExtension(ext: ServiceUiExtension, event: Event): void {
+    event.stopPropagation();
+    this.router.navigate(['/' + ext.route.replace(/^\//, '')]);
   }
 
   deleteService(service: AgenticService, event: Event): void {

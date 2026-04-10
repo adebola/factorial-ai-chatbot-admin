@@ -10,6 +10,7 @@ import { MainLayoutComponent } from './shared/layout/main-layout/main-layout.com
 // Guards
 import { AuthGuard } from './core/guards/auth.guard';
 import { SystemAdminGuard } from './core/guards/system-admin.guard';
+import { PluginAvailabilityGuard } from './core/guards/plugin-availability.guard';
 
 const routes: Routes = [
   // Public routes (no authentication required)
@@ -78,11 +79,22 @@ const routes: Routes = [
         loadChildren: () => import('./features/agentic-services/agentic-services.module').then(m => m.AgenticServicesModule)
       },
       {
+        // Plugin route — gated by PluginAvailabilityGuard so a bookmarked URL
+        // cannot reach the lazy-loaded module when the observability plugin is
+        // not installed in this environment. The `pluginRoute` data key is the
+        // identifier the catalog matches against (see PluginCatalogService).
         path: 'observability',
+        canActivate: [PluginAvailabilityGuard],
+        data: { pluginRoute: 'observability' },
         loadChildren: () => import('./features/observability/observability.module').then(m => m.ObservabilityModule)
       },
       {
+        // Plugin route — same gating as `observability` above. The LLM
+        // Providers menu is contributed by the observability plugin's
+        // manifest, so its `pluginRoute` resolves through the same catalog.
         path: 'llm-providers',
+        canActivate: [PluginAvailabilityGuard],
+        data: { pluginRoute: 'llm-providers' },
         loadChildren: () => import('./features/llm-providers/llm-providers.module').then(m => m.LLMProvidersModule)
       },
       {

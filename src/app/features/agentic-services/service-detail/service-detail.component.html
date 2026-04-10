@@ -73,6 +73,35 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Provided admin screens (plugin UI extensions contributed via the
+       service's /manifest) — rendered as a card grid. Each card routerLinks
+       to the existing top-level feature route (e.g. /observability) so the
+       PluginAvailabilityGuard still applies and bookmarked URLs continue to
+       work. The section is hidden if the service contributes no extensions. -->
+  <mat-card class="detail-card" *ngIf="service && !loading && service.ui_extensions && service.ui_extensions.length > 0">
+    <mat-card-header>
+      <mat-card-title>Provided admin screens</mat-card-title>
+      <mat-card-subtitle>Admin UI contributed by this service's plugin manifest</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="extensions-grid">
+        <mat-card class="extension-card" *ngFor="let ext of service.ui_extensions"
+                  [routerLink]="['/' + ext.route]">
+          <div class="extension-card-content">
+            <mat-icon class="extension-icon">{{ ext.icon || 'extension' }}</mat-icon>
+            <div class="extension-text">
+              <div class="extension-label">{{ ext.menu_label }}</div>
+              <div class="extension-route" *ngIf="ext.api_prefix">
+                <code>{{ ext.api_prefix }}</code>
+              </div>
+            </div>
+            <mat-icon class="extension-chevron">chevron_right</mat-icon>
+          </div>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   <!-- Assigned Tenants -->
   <mat-card class="detail-card" *ngIf="service && !loading">
     <mat-card-header>

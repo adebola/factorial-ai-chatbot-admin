@@ -77,6 +77,19 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
+                <!-- Plugin UI extension shortcuts (one per ui_extension on the
+                     manifest). Rendered above the standard actions so they're
+                     the first thing the user sees on a service that contributes
+                     screens. The same items live as cards inside the service
+                     detail page; this is a power-user shortcut. -->
+                <ng-container *ngIf="svc.ui_extensions && svc.ui_extensions.length > 0">
+                  <button mat-menu-item *ngFor="let ext of svc.ui_extensions"
+                          (click)="openExtension(ext, $event)">
+                    <mat-icon>{{ ext.icon || 'extension' }}</mat-icon>
+                    <span>{{ ext.menu_label }}</span>
+                  </button>
+                  <mat-divider></mat-divider>
+                </ng-container>
                 <button mat-menu-item (click)="viewDetail(svc)">
                   <mat-icon>visibility</mat-icon>
                   <span>View Detail</span>

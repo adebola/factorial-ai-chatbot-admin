@@ -18,6 +18,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+// MatSnackBarModule is required at the AppModule level so root-scoped
+// services (e.g. PluginAvailabilityGuard, providedIn: 'root') can inject
+// MatSnackBar. Without this, the root injector has no MatSnackBar provider
+// and the guard fails to instantiate with NullInjectorError.
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Interceptors
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
@@ -53,7 +58,8 @@ import { MainLayoutComponent } from './shared/layout/main-layout/main-layout.com
     MatToolbarModule,
     MatListModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ],
   providers: [
     {

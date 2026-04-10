@@ -58,21 +58,12 @@ export class ServiceFormDialogComponent implements OnInit {
     this.submitting = true;
     const formValue = this.serviceForm.getRawValue();
 
-    // Parse JSON string fields
-    if (formValue.capabilities && typeof formValue.capabilities === 'string') {
-      try {
-        formValue.capabilities = JSON.parse(formValue.capabilities);
-      } catch {
-        formValue.capabilities = undefined;
-      }
-    }
-    if (formValue.ui_hints && typeof formValue.ui_hints === 'string') {
-      try {
-        formValue.ui_hints = JSON.parse(formValue.ui_hints);
-      } catch {
-        formValue.ui_hints = undefined;
-      }
-    }
+    // Parse JSON string fields. Empty / whitespace-only strings must be sent
+    // as `undefined` (Angular's HttpClient omits the field) — sending `""`
+    // for these fields previously caused a 422 because the backend types
+    // them as Optional[Dict[str, Any]] and Pydantic v2 rejects empty strings.
+    formValue.capabilities = this.parseJsonField(formValue.capabilities);
+    formValue.ui_hints = this.parseJsonField(formValue.ui_hints);
 
     const request = this.mode === 'create'
       ? this.agenticService.createService(formValue as CreateServiceRequest)
@@ -95,5 +86,31 @@ export class ServiceFormDialogComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close(false);
+  }
+
+  /**
+   * Coerce a JSON-textarea value to either a parsed object or `undefined`.
+   * Returns `undefined` for empty/whitespace input or invalid JSON so the
+   * field is omitted from the request body — the backend treats missing
+   * fields as "no change" and rejects empty strings on dict-typed columns.
+   */
+  private parseJsonField(value: unknown): Record<string, any> | undefined {
+    if (value === null || value === undefined) {
+      return undefined;
+    }
+    if (typeof value !== 'string') {
+      // Already an object (e.g. unchanged on edit) — pass through.
+      return value as Record<string, any>;
+    }
+    const trimmed = value.trim();
+    if (trimmed === '') {
+      return undefined;
+    }
+    try {
+      const parsed = JSON.parse(trimmed);
+      return parsed && typeof parsed === 'object' ? parsed : undefined;
+    } catch {
+      return undefined;
+    }
   }
 }

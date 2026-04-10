@@ -3,6 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
+/**
+ * One admin-UI menu entry contributed by a plugin's manifest. Stored on the
+ * service row as a denormalized list and rendered inside the service detail
+ * page (and as row shortcuts on the service list page).
+ */
+export interface ServiceUiExtension {
+  menu_label: string;
+  icon: string | null;
+  route: string;
+  required_role: 'SUPER_ADMIN' | 'TENANT_ADMIN' | 'ANY';
+  api_prefix: string | null;
+}
+
 export interface AgenticService {
   id: string;
   name: string;
@@ -14,6 +27,10 @@ export interface AgenticService {
   icon_url: string | null;
   capabilities: Record<string, any> | null;
   ui_hints: Record<string, any> | null;
+  ui_extensions: ServiceUiExtension[] | null;
+  health_status: 'healthy' | 'unhealthy' | 'unknown';
+  last_manifest_fetch_at: string | null;
+  last_health_at: string | null;
   is_active: boolean;
   tenant_count: number;
   created_at: string;
