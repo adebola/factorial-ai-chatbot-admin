@@ -100,6 +100,10 @@ const routes: Routes = [
       {
         path: 'audit-logs',
         loadChildren: () => import('./features/audit-logs/audit-logs.module').then(m => m.AuditLogsModule)
+      },
+      {
+        path: 'rag-inspector',
+        loadChildren: () => import('./features/rag-inspector/rag-inspector.module').then(m => m.RagInspectorModule)
       }
     ]
   },

@@ -43,6 +43,7 @@ export class MainLayoutComponent implements OnInit {
     { label: 'Token Usage', icon: 'toll', route: '/token-usage' },
     { label: 'Services', icon: 'extension', route: '/services' },
     { label: 'Audit Logs', icon: 'policy', route: '/audit-logs' },
+    { label: 'RAG Inspector', icon: 'manage_search', route: '/rag-inspector' },
   ];
 
   constructor(
