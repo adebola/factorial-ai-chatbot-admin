@@ -15,6 +15,7 @@ export interface Plan {
   monthly_plan_cost: string;
   yearly_plan_cost: string;
   features: string[] | null;
+  has_whatsapp?: boolean;
   is_active: boolean;
   is_deleted: boolean;
   tenant_count?: number;
@@ -32,6 +33,7 @@ export interface CreatePlanRequest {
   monthly_plan_cost: string;
   yearly_plan_cost: string;
   features?: string[];
+  has_whatsapp?: boolean;
 }
 
 export interface UpdatePlanRequest extends Partial<CreatePlanRequest> {

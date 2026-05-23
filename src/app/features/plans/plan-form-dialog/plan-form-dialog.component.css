@@ -18,6 +18,26 @@ mat-dialog-content {
   max-height: 600px;
 }
 
+.channels-section {
+  margin-top: 20px;
+  padding: 12px 16px;
+  background-color: #f7f9fc;
+  border-radius: 6px;
+}
+
+.channels-section > label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.channels-section .hint-text {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #888;
+}
+
 .features-section {
   margin-top: 20px;
 }

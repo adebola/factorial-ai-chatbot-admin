@@ -6,6 +6,7 @@ import { TenantsRoutingModule } from './tenants-routing.module';
 import { TenantsComponent } from './tenants/tenants.component';
 import { TenantListComponent } from './tenant-list/tenant-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
+import { TenantCommunicationsComponent } from './tenant-detail/tenant-communications/tenant-communications.component';
 
 // Angular Material
 import { MatTableModule } from '@angular/material/table';
@@ -29,7 +30,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   declarations: [
     TenantsComponent,
     TenantListComponent,
-    TenantDetailComponent
+    TenantDetailComponent,
+    TenantCommunicationsComponent
   ],
   imports: [
     CommonModule,

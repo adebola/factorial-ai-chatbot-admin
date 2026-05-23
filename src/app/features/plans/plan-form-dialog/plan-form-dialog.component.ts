@@ -34,6 +34,7 @@ export class PlanFormDialogComponent implements OnInit {
       monthly_chat_limit: [this.plan?.monthly_chat_limit ?? 500, [Validators.required, Validators.min(-1)]],
       monthly_plan_cost: [this.plan?.monthly_plan_cost || '0.00', Validators.required],
       yearly_plan_cost: [this.plan?.yearly_plan_cost || '0.00', Validators.required],
+      has_whatsapp: [this.plan?.has_whatsapp ?? false],
       features: this.fb.array(
         (this.plan?.features && Array.isArray(this.plan.features))
           ? this.plan.features.map(f => this.fb.control(f))

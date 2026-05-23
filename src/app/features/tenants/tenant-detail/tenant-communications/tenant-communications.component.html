@@ -1,0 +1,136 @@
+<div class="communications-container">
+  <!-- WhatsApp config readout -->
+  <mat-card class="config-card">
+    <mat-card-header>
+      <mat-card-title>WhatsApp configuration</mat-card-title>
+      <mat-card-subtitle>
+        Configuration is managed by the tenant admin from their own dashboard.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="loadingConfig" class="loading">
+        <mat-spinner diameter="32"></mat-spinner>
+      </div>
+      <div *ngIf="!loadingConfig && config" class="config-grid">
+        <div class="config-row">
+          <span class="label">Status</span>
+          <span>
+            <mat-chip [class.status-on]="config.whatsapp_enabled" [class.status-off]="!config.whatsapp_enabled">
+              {{ config.whatsapp_enabled ? 'Enabled' : 'Disabled' }}
+            </mat-chip>
+          </span>
+        </div>
+        <div class="config-row">
+          <span class="label">Phone number</span>
+          <span>{{ config.phone_number || '—' }}</span>
+        </div>
+        <div class="config-row">
+          <span class="label">Twilio Account SID</span>
+          <span class="mono">{{ config.account_sid_masked || '—' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Messages viewer -->
+  <mat-card class="messages-card">
+    <mat-card-header>
+      <mat-card-title>Messages</mat-card-title>
+      <mat-card-subtitle>Inbound and outbound WhatsApp messages for this tenant.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="filters">
+        <mat-form-field appearance="outline">
+          <mat-label>Direction</mat-label>
+          <mat-select [formControl]="directionFilter">
+            <mat-option [value]="null">All</mat-option>
+            <mat-option value="inbound">Inbound</mat-option>
+            <mat-option value="outbound">Outbound</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select [formControl]="statusFilter">
+            <mat-option [value]="null">All</mat-option>
+            <mat-option value="pending">Pending</mat-option>
+            <mat-option value="sent">Sent</mat-option>
+            <mat-option value="delivered">Delivered</mat-option>
+            <mat-option value="opened">Opened (read)</mat-option>
+            <mat-option value="failed">Failed</mat-option>
+            <mat-option value="bounced">Bounced</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="loadMessages()" [disabled]="loadingMessages" aria-label="Refresh">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="loadingMessages" class="loading">
+        <mat-spinner diameter="32"></mat-spinner>
+      </div>
+
+      <div *ngIf="!loadingMessages && messages.length === 0" class="empty">
+        <mat-icon>chat_bubble_outline</mat-icon>
+        <p>No messages match the current filters.</p>
+      </div>
+
+      <table mat-table [dataSource]="messages"
+             *ngIf="!loadingMessages && messages.length > 0"
+             class="messages-table">
+        <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef>Time</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.created_at ? (row.created_at | date:'short') : '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="direction">
+          <th mat-header-cell *matHeaderCellDef>Direction</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-chip [class.inbound]="row.direction === 'inbound'"
+                      [class.outbound]="row.direction === 'outbound'">
+              {{ row.direction }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="wa_id">
+          <th mat-header-cell *matHeaderCellDef>Contact</th>
+          <td mat-cell *matCellDef="let row">{{ row.wa_id || row.from_phone }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="message">
+          <th mat-header-cell *matHeaderCellDef>Message</th>
+          <td mat-cell *matCellDef="let row" class="message-cell">
+            {{ truncate(row.message, 80) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-chip [class.status-ok]="row.status === 'delivered' || row.status === 'sent' || row.status === 'opened'"
+                      [class.status-bad]="row.status === 'failed' || row.status === 'bounced'">
+              {{ row.status }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator
+        *ngIf="!loadingMessages && messages.length > 0"
+        [length]="total"
+        [pageSize]="pageSize"
+        [pageIndex]="page - 1"
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        (page)="onPage($event)"
+        aria-label="Select page of messages">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -57,6 +57,14 @@
       </mat-form-field>
     </div>
 
+    <div class="channels-section">
+      <label>Channels & Integrations</label>
+      <mat-slide-toggle formControlName="has_whatsapp">
+        Enable WhatsApp Integration
+      </mat-slide-toggle>
+      <p class="hint-text">When enabled, tenants on this plan can register their Twilio WhatsApp Business credentials and use WhatsApp as a chat channel.</p>
+    </div>
+
     <div class="features-section">
       <label>Features</label>
       <div formArrayName="features">
