@@ -67,9 +67,9 @@
       <mat-card-header><mat-card-title>Usage by Tenant</mat-card-title></mat-card-header>
       <mat-card-content>
         <table mat-table [dataSource]="tenantData" class="tenant-table" *ngIf="tenantData.length > 0">
-          <ng-container matColumnDef="tenant_id">
-            <th mat-header-cell *matHeaderCellDef>Tenant ID</th>
-            <td mat-cell *matCellDef="let row">{{ row.tenant_id }}</td>
+          <ng-container matColumnDef="tenant">
+            <th mat-header-cell *matHeaderCellDef>Tenant</th>
+            <td mat-cell *matCellDef="let row">{{ tenantName(row.tenant_id) }}</td>
           </ng-container>
           <ng-container matColumnDef="total_tokens">
             <th mat-header-cell *matHeaderCellDef>Total Tokens</th>

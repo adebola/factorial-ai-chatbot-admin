@@ -7,6 +7,7 @@ import {
   DailyTokenUsage,
   ModelTokenUsage
 } from '../services/token-usage.service';
+import { TenantService } from '../../tenants/services/tenant.service';
 
 @Component({
   selector: 'app-token-usage-dashboard',
@@ -16,6 +17,7 @@ import {
 export class TokenUsageDashboardComponent implements OnInit {
   summary: TokenUsageSummary | null = null;
   tenantData: TenantTokenUsage[] = [];
+  tenantNames: Record<string, string> = {};
   modelData: ModelTokenUsage[] = [];
   loading = true;
 
@@ -25,7 +27,7 @@ export class TokenUsageDashboardComponent implements OnInit {
   endDate: string = '';
 
   // Tenant table
-  displayedColumns = ['tenant_id', 'total_tokens', 'total_cost_usd', 'request_count'];
+  displayedColumns = ['tenant', 'total_tokens', 'total_cost_usd', 'request_count'];
   tenantPage = 0;
   tenantPageSize = 10;
 
@@ -43,11 +45,26 @@ export class TokenUsageDashboardComponent implements OnInit {
     }
   };
 
-  constructor(private tokenUsageService: TokenUsageService) {}
+  constructor(
+    private tokenUsageService: TokenUsageService,
+    private tenantService: TenantService
+  ) {}
 
   ngOnInit(): void {
     this.setDateRange(30);
+    this.loadTenantNames();
     this.loadData();
+  }
+
+  loadTenantNames(): void {
+    this.tenantService.getTenantDropdown().subscribe({
+      next: (list) => { list.forEach(t => this.tenantNames[t.id] = t.name); },
+      error: () => {}
+    });
+  }
+
+  tenantName(id: string): string {
+    return this.tenantNames[id] || id;
   }
 
   setDateRange(days: number): void {

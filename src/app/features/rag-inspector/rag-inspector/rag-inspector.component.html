@@ -1,0 +1,234 @@
+<div class="rag-inspector-container">
+  <div class="page-header">
+    <h1>
+      <mat-icon>manage_search</mat-icon>
+      RAG Inspector
+    </h1>
+    <p class="page-subtitle">
+      Inspect what chunks the chat service retrieves from a tenant's vector store
+      for a given query. Use this to debug retrieval misses.
+    </p>
+  </div>
+
+  <mat-card class="query-card">
+    <mat-card-header>
+      <mat-card-title>Query</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="query-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="flex-2">
+            <mat-label>Tenant</mat-label>
+            <mat-select formControlName="tenant_id" [disabled]="loadingTenants">
+              <mat-option *ngFor="let t of tenants" [value]="t.id">
+                {{ t.name }}
+              </mat-option>
+            </mat-select>
+            <mat-progress-spinner
+              *ngIf="loadingTenants"
+              matSuffix
+              diameter="20"
+              mode="indeterminate"
+            ></mat-progress-spinner>
+            <mat-error *ngIf="form.get('tenant_id')?.hasError('required')">
+              Tenant is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex-3">
+            <mat-label>Query</mat-label>
+            <input
+              matInput
+              formControlName="query"
+              placeholder="e.g. do you have any job openings?"
+              autocomplete="off"
+            />
+            <mat-error *ngIf="form.get('query')?.hasError('required')">
+              Query is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>k (top results)</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="k"
+              min="1"
+              max="50"
+            />
+            <mat-hint>1–50</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>max_distance (cosine)</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="max_distance"
+              min="0"
+              max="2"
+              step="0.1"
+            />
+            <mat-hint>0–2 — chunks &gt;= this are dropped in prod</mat-hint>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="loading || form.invalid"
+            >
+              <mat-icon>search</mat-icon>
+              Inspect
+            </button>
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="reset()"
+              [disabled]="loading"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <mat-progress-bar
+          *ngIf="loading"
+          mode="indeterminate"
+          class="loading-bar"
+        ></mat-progress-bar>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="response" class="results-card">
+    <mat-card-header>
+      <mat-card-title>Results</mat-card-title>
+      <mat-card-subtitle>
+        Returned <strong>{{ response.returned.length }}</strong> chunks
+        ({{ response.dropped_by_threshold }} would be dropped by threshold)
+        &mdash; total chunks in store for this tenant:
+        <strong>{{ response.total_chunks_in_store }}</strong>
+        &mdash; query embedding dim: {{ response.query_embedding_dim }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="response.returned.length === 0" class="empty-state">
+        <mat-icon>info</mat-icon>
+        <p>
+          No chunks were returned. Either the tenant has no ingested content,
+          or no vectors matched at any distance for this query.
+        </p>
+        <p *ngIf="response.total_chunks_in_store === 0">
+          The vector store contains <strong>0 chunks</strong> for this tenant
+          &mdash; check ingestion status in the onboarding service.
+        </p>
+      </div>
+
+      <table
+        *ngIf="response.returned.length > 0"
+        mat-table
+        [dataSource]="response.returned"
+        class="results-table"
+      >
+        <ng-container matColumnDef="rank">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let chunk">{{ chunk.rank }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="distance">
+          <th mat-header-cell *matHeaderCellDef>Distance</th>
+          <td mat-cell *matCellDef="let chunk">
+            <span [ngClass]="distanceClass(chunk)" class="distance-badge">
+              {{ chunk.distance | number: '1.4-4' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="source_name">
+          <th mat-header-cell *matHeaderCellDef>Source</th>
+          <td mat-cell *matCellDef="let chunk" class="source-cell">
+            <span [matTooltip]="chunk.source_name || ''">
+              {{ chunk.source_name || '—' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="section_title">
+          <th mat-header-cell *matHeaderCellDef>Section</th>
+          <td mat-cell *matCellDef="let chunk">
+            {{ chunk.section_title || '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Preview</th>
+          <td mat-cell *matCellDef="let chunk">
+            <button
+              mat-icon-button
+              (click)="toggleRow(chunk)"
+              [attr.aria-label]="
+                expanded[chunk.chunk_id] ? 'Collapse' : 'Expand'
+              "
+            >
+              <mat-icon>
+                {{ expanded[chunk.chunk_id] ? 'expand_less' : 'expand_more' }}
+              </mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              (click)="copyChunkContent(chunk, $event)"
+              matTooltip="Copy preview"
+            >
+              <mat-icon>content_copy</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expanded-detail">
+          <td
+            mat-cell
+            *matCellDef="let chunk"
+            [attr.colspan]="displayedColumns.length"
+            class="expanded-cell"
+          >
+            <div
+              class="chunk-preview"
+              [class.expanded]="expanded[chunk.chunk_id]"
+            >
+              <div class="chunk-meta">
+                <span><strong>id:</strong> {{ chunk.chunk_id }}</span>
+                <span *ngIf="chunk.chunk_index !== null">
+                  <strong>chunk_index:</strong> {{ chunk.chunk_index }}
+                </span>
+                <span *ngIf="chunk.source_type">
+                  <strong>type:</strong> {{ chunk.source_type }}
+                </span>
+              </div>
+              <pre>{{ chunk.content_preview }}</pre>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="data-row"
+          (click)="toggleRow(row)"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['expanded-detail']"
+          class="detail-row"
+          [class.hidden-row]="!expanded[row.chunk_id]"
+        ></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,168 @@
+.rag-inspector-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.page-header h1 mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.page-subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  font-size: 14px;
+}
+
+.query-card {
+  margin-bottom: 24px;
+}
+
+.query-form .form-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.query-form .form-row + .form-row {
+  margin-top: 8px;
+}
+
+.flex-1 { flex: 1 1 160px; }
+.flex-2 { flex: 2 1 240px; }
+.flex-3 { flex: 3 1 320px; }
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-top: 6px;
+}
+
+.loading-bar {
+  margin-top: 8px;
+}
+
+.results-card {
+  margin-bottom: 24px;
+}
+
+.results-table {
+  width: 100%;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+  color: #607d8b;
+}
+
+.distance-badge {
+  font-family: 'Roboto Mono', monospace;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.distance-good {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.distance-warn {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.distance-dropped {
+  background-color: #ffebee;
+  color: #c62828;
+  text-decoration: line-through;
+}
+
+.source-cell {
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.data-row {
+  cursor: pointer;
+}
+
+.data-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.detail-row {
+  height: 0;
+}
+
+.detail-row.hidden-row td {
+  padding: 0;
+  border: none;
+}
+
+.expanded-cell {
+  padding: 0 !important;
+  background-color: #fafafa;
+}
+
+.chunk-preview {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+  padding: 0 16px;
+}
+
+.chunk-preview.expanded {
+  max-height: 600px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.chunk-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.chunk-preview pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.87);
+}
