@@ -12,7 +12,7 @@ import { ChatDetailDialogComponent } from '../chat-detail-dialog/chat-detail-dia
   styleUrls: ['./chat-session-list.component.css']
 })
 export class ChatSessionListComponent implements OnInit {
-  displayedColumns = ['user_email', 'message_count', 'status', 'started_at', 'actions'];
+  displayedColumns = ['tenant_name', 'message_count', 'status', 'started_at', 'actions'];
   dataSource: ChatSession[] = [];
   loading = false;
   totalElements = 0;
